@@ -2,89 +2,43 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, Calendar, Users, MapPin, Clock, ArrowLeft } from "lucide-react";
+import { Sparkles, Calendar, Users, MapPin, Clock, ArrowLeft, Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import api from "@/lib/api";
+
+interface Event {
+  id: number;
+  title: string;
+  category: string;
+  description: string;
+  date: string;
+  time: string;
+  location: string;
+  participants: number;
+  teamSize: string;
+  status: string;
+  prizePool: string;
+}
 
 const Events = () => {
-  const events = [
-    {
-      id: 1,
-      title: "GameOn: Arena Wars",
-      category: "Gaming",
-      description: "24x7 gaming tournament with multiple battle arenas",
-      date: "November 7-8, 2025",
-      time: "Throughout the day",
-      location: "Study Center Arena",
-      participants: 200,
-      teamSize: "Solo/Team (varies by game)",
-      status: "Open",
-      prizePool: "₹50,000"
-    },
-    {
-      id: 2,
-      title: "Drop That Beat",
-      category: "Cultural",
-      description: "Solo DJ competition featuring the best beatmakers",
-      date: "November 8, 2025",
-      time: "11:00 AM - 2:00 PM",
-      location: "Main Stage",
-      participants: 30,
-      teamSize: "Solo",
-      status: "Open",
-      prizePool: "₹30,000"
-    },
-    {
-      id: 3,
-      title: "Live Concert Night",
-      category: "Concert",
-      description: "Live musical performance by top artists",
-      date: "Upcoming",
-      time: "09:00 PM onwards",
-      location: "Main Stage",
-      participants: 2000,
-      teamSize: "No registration needed",
-      status: "Open Entry",
-      prizePool: "Free Entry"
-    },
-    {
-      id: 4,
-      title: "EDM Night",
-      category: "Concert",
-      description: "High-energy DJ set to end the fest on a high note",
-      date: "Upcoming",
-      time: "11:00 PM onwards",
-      location: "Main Stage",
-      participants: 2000,
-      teamSize: "No registration needed",
-      status: "Open Entry",
-      prizePool: "Free Entry"
-    },
-    {
-      id: 5,
-      title: "Tech Innovation Challenge",
-      category: "Technical",
-      description: "Build innovative tech solutions for real-world problems",
-      date: "November 7, 2025",
-      time: "10:00 AM - 1:00 PM",
-      location: "Innovation Lab",
-      participants: 100,
-      teamSize: "3-4 members",
-      status: "Filling Fast",
-      prizePool: "₹40,000"
-    },
-    {
-      id: 6,
-      title: "Cosplay Competition",
-      category: "Cultural",
-      description: "Show off your creative side in this cosplay competition",
-      date: "Upcoming",
-      time: "1:00 PM - 4:00 PM",
-      location: "Central Arena",
-      participants: 80,
-      teamSize: "Solo/Duo",
-      status: "Open",
-      prizePool: "₹25,000"
-    },
-  ];
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await api.get("/events");
+        setEvents(response.data.events);
+      } catch (error) {
+        console.error("Failed to fetch events:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
 
   const getCategoryColor = (category: string) => {
     switch (category) {
@@ -162,67 +116,73 @@ const Events = () => {
 
       {/* Events Grid */}
       <section className="container mx-auto px-4 pb-20">
-        <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-          {events.map((event) => (
-            <Card
-              key={event.id}
-              className="p-6 bg-card/50 backdrop-blur border-border/50 hover:border-primary/50 transition-all hover:shadow-glow group"
-            >
-              <div className="space-y-4">
-                <div className="flex items-start justify-between">
-                  <div className="space-y-2">
-                    <h3 className="text-xl font-bold group-hover:text-primary transition-colors">
-                      {event.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {event.description}
-                    </p>
-                  </div>
-                  <Badge variant="outline" className={getCategoryColor(event.category)}>
-                    {event.category}
-                  </Badge>
-                </div>
-
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Calendar className="w-4 h-4" />
-                    <span>{event.date}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Clock className="w-4 h-4" />
-                    <span>{event.time}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <MapPin className="w-4 h-4" />
-                    <span>{event.location}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Users className="w-4 h-4" />
-                    <span>{event.participants} expected • {event.teamSize}</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between pt-4 border-t border-border/50">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline" className={getStatusColor(event.status)}>
-                      {event.status}
+        {loading ? (
+          <div className="flex justify-center items-center min-h-[400px]">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+            {events.map((event) => (
+              <Card
+                key={event.id}
+                className="p-6 bg-card/50 backdrop-blur border-border/50 hover:border-primary/50 transition-all hover:shadow-glow group"
+              >
+                <div className="space-y-4">
+                  <div className="flex items-start justify-between">
+                    <div className="space-y-2">
+                      <h3 className="text-xl font-bold group-hover:text-primary transition-colors">
+                        {event.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        {event.description}
+                      </p>
+                    </div>
+                    <Badge variant="outline" className={getCategoryColor(event.category)}>
+                      {event.category}
                     </Badge>
-                    {event.prizePool !== "Free Entry" && (
-                      <Badge variant="outline" className="bg-accent/20 text-accent border-accent/30">
-                        🏆 {event.prizePool}
-                      </Badge>
-                    )}
                   </div>
-                  <Link to="/auth">
-                    <Button variant="hero" size="sm">
-                      {event.category === "Concert" ? "Get Pass" : "Register Now"}
-                    </Button>
-                  </Link>
+
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Calendar className="w-4 h-4" />
+                      <span>{event.date}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Clock className="w-4 h-4" />
+                      <span>{event.time}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <MapPin className="w-4 h-4" />
+                      <span>{event.location}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Users className="w-4 h-4" />
+                      <span>{event.participants} expected • {event.teamSize}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className={getStatusColor(event.status)}>
+                        {event.status}
+                      </Badge>
+                      {event.prizePool !== "Free Entry" && (
+                        <Badge variant="outline" className="bg-accent/20 text-accent border-accent/30">
+                          🏆 {event.prizePool}
+                        </Badge>
+                      )}
+                    </div>
+                    <Link to="/auth">
+                      <Button variant="hero" size="sm">
+                        {event.category === "Concert" ? "Get Pass" : "Register Now"}
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </Card>
-          ))}
-        </div>
+              </Card>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
