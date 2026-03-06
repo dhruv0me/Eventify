@@ -1,157 +1,80 @@
-# 🎉 Eventify – Smart Event Management Portal for College Fests  
+# 🎉 Eventify – Smart Event Management Portal
 
-![Made with React](https://img.shields.io/badge/Made%20with-React-blue?logo=react)  
-![Built on Supabase](https://img.shields.io/badge/Built%20on-Supabase-green?logo=supabase)  
-![License](https://img.shields.io/badge/License-MIT-green)  
-![Status](https://img.shields.io/badge/Status-Active-success)
-
-> **Centralized event registration, team management, and live leaderboards — all in one portal.**
+**Eventify** is a professional Event Management Portal designed for college fests, hackathons, and corporate events. It streamlines the entire lifecycle of an event, from discovery and registration to live scoring and leaderboards.
 
 ---
 
-## 🧩 Overview
+## 🚀 Key Features
 
-**Eventify** is a cloud-powered **Event Management Portal** for college fests, hackathons, and cultural events.  
-It simplifies registration, team creation, scoring, and announcements through a real-time **React + Supabase** platform.  
-
-Colleges can manage multiple events, leaderboards, and announcements seamlessly — no spreadsheets, no confusion.
-
----
-
-## 🚀 Features
-
-✅ **Centralized Registration** – Register for solo or team events easily.  
-✅ **Smart Team Formation** – Create or join teams via secure invite codes.  
-✅ **Live Leaderboard** – Real-time score updates with Supabase Realtime.  
-✅ **Role-Based Access** – Dashboards for Admins, Coordinators, and Participants.  
-✅ **Push Notifications** – Live updates for schedules and results.  
-✅ **Responsive Design** – Optimized for all devices.  
+- **Centralized Event Discovery**: Browse all upcoming events with real-time status updates.
+- **Secure Authentication**: JWT-based login and registration system.
+- **Smart Registration**: One-click registration for solo events and team-based registration with unique invite codes.
+- **User Dashboard**: Personalized profile to track all registered events, team details, and live scores.
+- **Live Leaderboard**: Real-time rankings and score synchronization.
+- **Responsive Design**: Premium UI optimized for both desktop and mobile devices.
 
 ---
 
 ## ⚙️ Tech Stack
 
-| Layer | Technology |
-|-------|-------------|
-| **Frontend** | React.js + Vite + Tailwind CSS |
-| **Backend** | Supabase (Auth, Postgres Database, Storage) |
-| **Hosting** | Vercel / Netlify |
-| **Database** | PostgreSQL via Supabase |
-| **Auth** | Supabase Auth (Email / OAuth) |
+### Frontend
+- **Framework**: React.js with Vite
+- **Styling**: Tailwind CSS & Lucide Icons
+- **UI Components**: Radix UI (Shadcn UI)
+- **API Client**: Axios
+
+### Backend
+- **Language**: Python 3.x
+- **Framework**: Flask
+- **Database**: SQLite (SQLAlchemy ORM)
+- **Security**: PyJWT & Werkzeug Hash
 
 ---
 
-## 🧠 How It Works
+## 🛠️ Getting Started
 
-1. Users log in via Google or email.  
-2. Browse events and register (solo or team).  
-3. Create or join teams using unique codes.  
-4. Coordinators update scores securely.  
-5. Leaderboards refresh in real-time.  
-6. Admins send announcements instantly.  
+### Prerequisites
+- Python 3.8+
+- Node.js & npm
 
----
+### Backend Setup
+1. Navigate to the `backend` directory:
+   ```bash
+   cd backend
+   ```
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Start the Flask server:
+   ```bash
+   python app.py
+   ```
+   *The API will run on `http://127.0.0.1:5000`*
 
-## 💡 Why Eventify
-
-Traditional event management uses forms, chats, and spreadsheets — confusing and error-prone.  
-**Eventify** automates everything for accuracy, transparency, and speed.
-
-🎯 **Impact Highlights**
-- ⏱️ 80% less coordination time  
-- 🧾 Error-free registrations and scoring  
-- 🔔 Instant communication between teams and coordinators  
-- ☁️ Cloud-hosted and scalable  
-
----
-
-## 🏗️ Core Modules
-
-| Module | Description |
-|---------|--------------|
-| 🧾 Registration | Handles solo and team sign-ups |
-| 👥 Team Management | Create / join teams with codes |
-| 🏆 Leaderboard | Live rank updates |
-| 🎯 Coordinator Console | Add results and manage rounds |
-| 📣 Announcements | Send updates and notifications |
-| 🔐 Admin Panel | Role & event control |
+### Frontend Setup
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
+   *The app will run on `http://localhost:8081` (or next available port)*
 
 ---
 
-## 🌈 UI & UX
-
-- Clean dashboard-style layout  
-- Built with **TailwindCSS**  
-- Responsive for mobile & desktop  
-- Public “Leaderboard Screen” mode for stage displays  
+## 🎨 UI/UX Highlights
+- **Glassmorphism**: Modern backdrop-blur effects on navbars and cards.
+- **Gradient Aesthetics**: Premium color palettes using primary and primary-glow accents.
+- **Micro-Animations**: Subtle hover effects and loading states for a premium feel.
 
 ---
 
-## 🧰 Future Enhancements
-
-✨ Payment Gateway (Razorpay / Stripe)  
-✨ Certificate Auto-Generation (PDF)  
-✨ QR Check-ins & Attendance  
-✨ AI-Based Schedule Optimization  
-✨ Organizer Analytics Dashboard  
+## 🧑‍💻 Author
+**Dhruv** – Developer & Designer
 
 ---
 
-## 🏫 Ideal Use Cases
-
-- 🎓 College Technical Fests  
-- 💻 Hackathons  
-- 🎭 Cultural / Sports Events  
-- 🏆 Inter-College Competitions  
-
----
-
-## 🌍 SEO Meta
-
-**Meta Description:**  
-> Eventify is a smart, real-time Event Management Portal for college fests and hackathons. Built with React and Firebase, it enables centralized registration, team management, leaderboards, and announcements from one dashboard.
-
-**SEO Keywords:**  
-`college fest management system`, `supabase hackathon project`, `react supabase app`, `real-time leaderboard`, `college event portal`, `team management system`, `hackathon project idea`, `eventify web app`
-
----
-
-## 🪄 Tagline
 > *One Platform. Every Event. Total Control.*
-
----
-
-## 📊 Quick Stats
-- 🌐 Real-time synchronization (Supabase)  
-- 💻 Cross-platform responsive UI  
-- 🔒 Secure authentication and roles  
-
----
-
-## 🏁 Conclusion
-
-**Eventify** transforms how colleges run their fests — fast, reliable, and scalable.  
-Whether for a **technical hackathon** or **cultural week**, it ensures every event runs smoothly from registration to final results.  
-
----
-
-## 🧑‍💻 Contributors
-- **Dhruv** – Developer & Designer  
-- *(Add teammates if applicable)*  
-
----
-
-## 🪪 License
-This project is released under the [MIT License](LICENSE).
-
----
-
-### 💬 Connect & Contribute
-Have suggestions or want to collaborate?  
-Open an issue or reach out via email!
-
----
-
-> 🚀 *Built with passion during a college hackathon — making event chaos a thing of the past.*
-
-

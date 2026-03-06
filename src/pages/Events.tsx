@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Sparkles, Calendar, Users, MapPin, Clock, ArrowLeft, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import api from "@/lib/api";
+import { useToast } from "@/hooks/use-toast";
+import { Input } from "@/components/ui/input";
 
 interface Event {
   id: number;
@@ -23,8 +25,16 @@ interface Event {
 const Events = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
+  const [registering, setRegistering] = useState<number | null>(null);
+  const [teamName, setTeamName] = useState("");
+  const { toast } = useToast();
 
   useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
     const fetchEvents = async () => {
       try {
         const response = await api.get("/events");
@@ -39,6 +49,34 @@ const Events = () => {
     fetchEvents();
   }, []);
 
+  const handleRegister = async (eventId: number) => {
+    if (!user) {
+      toast({
+        title: "Sign in required",
+        description: "Please log in to register for events.",
+      });
+      return;
+    }
+
+    try {
+      await api.post("/events/register", {
+        event_id: eventId,
+        team_name: teamName || null,
+      });
+      toast({
+        title: "Registration successful!",
+        description: "Check your dashboard for details.",
+      });
+      setRegistering(null);
+      setTeamName("");
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Registration failed",
+        description: error.response?.data?.message || "Something went wrong",
+      });
+    }
+  };
 
   const getCategoryColor = (category: string) => {
     switch (category) {
@@ -86,12 +124,18 @@ const Events = () => {
               <Link to="/">
                 <Button variant="ghost">
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back to Home
+                  Home
                 </Button>
               </Link>
-              <Link to="/auth">
-                <Button variant="hero">Sign In</Button>
-              </Link>
+              {user ? (
+                <Link to="/dashboard">
+                  <Button variant="hero">My Dashboard</Button>
+                </Link>
+              ) : (
+                <Link to="/auth">
+                  <Button variant="hero">Sign In</Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -172,11 +216,39 @@ const Events = () => {
                         </Badge>
                       )}
                     </div>
-                    <Link to="/auth">
-                      <Button variant="hero" size="sm">
+
+                    {registering === event.id ? (
+                      <div className="flex flex-col gap-2 w-full mt-4">
+                        <Input
+                          placeholder="Team Name (Optional)"
+                          value={teamName}
+                          onChange={(e) => setTeamName(e.target.value)}
+                          className="text-xs h-8"
+                        />
+                        <div className="flex gap-2">
+                          <Button size="sm" className="flex-1 text-xs h-8" onClick={() => handleRegister(event.id)}>Confirm</Button>
+                          <Button size="sm" variant="ghost" className="text-xs h-8" onClick={() => { setRegistering(null); setTeamName(""); }}>Cancel</Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <Button
+                        variant="hero"
+                        size="sm"
+                        onClick={() => {
+                          if (!user) {
+                            window.location.href = '#/auth';
+                            return;
+                          }
+                          if (event.category === "Concert") {
+                            handleRegister(event.id);
+                          } else {
+                            setRegistering(event.id);
+                          }
+                        }}
+                      >
                         {event.category === "Concert" ? "Get Pass" : "Register Now"}
                       </Button>
-                    </Link>
+                    )}
                   </div>
                 </div>
               </Card>

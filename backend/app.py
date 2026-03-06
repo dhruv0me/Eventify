@@ -6,13 +6,18 @@ import jwt
 from datetime import datetime, timedelta
 from functools import wraps
 from models import db, User, Event, Registration
+from dotenv import load_dotenv
+import random
+import string
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
 # Configuration
-app.config['SECRET_KEY'] = 'eventify_secret_key_123' # In production, use a secure env variable
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///eventify.db'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'default_secret_key')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///eventify.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
@@ -113,6 +118,92 @@ def get_events():
         }
         output.append(event_data)
     return jsonify({'events': output})
+
+
+@app.route('/api/events/register', methods=['POST'])
+@token_required
+def register_event(current_user):
+    data = request.get_json()
+    event_id = data.get('event_id')
+    team_name = data.get('team_name')
+    
+    if not event_id:
+        return jsonify({'message': 'Event ID is required'}), 400
+        
+    event = Event.query.get(event_id)
+    if not event:
+        return jsonify({'message': 'Event not found'}), 404
+        
+    # Check if already registered
+    existing = Registration.query.filter_by(user_id=current_user.id, event_id=event_id).first()
+    if existing:
+        return jsonify({'message': 'Already registered for this event'}), 400
+        
+    # Generate team code if team_name is provided
+    team_code = None
+    if team_name:
+        team_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        
+    registration = Registration(
+        user_id=current_user.id,
+        event_id=event_id,
+        team_name=team_name,
+        team_code=team_code
+    )
+    
+    db.session.add(registration)
+    db.session.commit()
+    
+    return jsonify({
+        'message': 'Registered successfully',
+        'registration': {
+            'id': registration.id,
+            'team_name': registration.team_name,
+            'team_code': registration.team_code
+        }
+    }), 201
+
+
+@app.route('/api/user/registrations', methods=['GET'])
+@token_required
+def get_user_registrations(current_user):
+    registrations = Registration.query.filter_by(user_id=current_user.id).all()
+    output = []
+    for reg in registrations:
+        event = Event.query.get(reg.event_id)
+        output.append({
+            'registration_id': reg.id,
+            'event': {
+                'id': event.id,
+                'title': event.title,
+                'category': event.category,
+                'date': event.date,
+                'time': event.time,
+                'location': event.location
+            },
+            'team_name': reg.team_name,
+            'team_code': reg.team_code,
+            'score': reg.score,
+            'registered_at': reg.registered_at.isoformat()
+        })
+    return jsonify({'registrations': output})
+
+
+@app.route('/api/leaderboard', methods=['GET'])
+def get_leaderboard():
+    # Fetch top registrations by score
+    top_registrations = Registration.query.order_by(Registration.score.desc()).limit(10).all()
+    output = []
+    for reg in top_registrations:
+        user = User.query.get(reg.user_id)
+        event = Event.query.get(reg.event_id)
+        output.append({
+            'user_name': user.name,
+            'event_title': event.title,
+            'team_name': reg.team_name,
+            'score': reg.score
+        })
+    return jsonify({'leaderboard': output})
 
 
 @app.route('/api/events/seed', methods=['POST'])

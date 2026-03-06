@@ -3,7 +3,18 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Calendar, Trophy, Users, Zap, ChevronRight, Sparkles } from "lucide-react";
 
+import { useState, useEffect } from "react";
+
 const Index = () => {
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
   const features = [
     {
       icon: Users,
@@ -45,9 +56,15 @@ const Index = () => {
               <Link to="/events">
                 <Button variant="ghost">Events</Button>
               </Link>
-              <Link to="/auth">
-                <Button variant="hero">Get Started</Button>
-              </Link>
+              {user ? (
+                <Link to="/dashboard">
+                  <Button variant="hero">My Dashboard</Button>
+                </Link>
+              ) : (
+                <Link to="/auth">
+                  <Button variant="hero">Get Started</Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -61,7 +78,7 @@ const Index = () => {
               🚀 Smart Event Management Portal
             </div>
           </div>
-          
+
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
             One Platform.{" "}
             <span className="bg-gradient-to-r from-primary via-primary-glow to-accent bg-clip-text text-transparent">
@@ -69,9 +86,9 @@ const Index = () => {
             </span>{" "}
             Total Control.
           </h1>
-          
+
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Centralized event registration, team management, and live leaderboards — all in one portal. 
+            Centralized event registration, team management, and live leaderboards — all in one portal.
             From cultural festivals to technical hackathons, we've got you covered.
           </p>
 

@@ -29,4 +29,6 @@ class Registration(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
     team_name = db.Column(db.String(100))
+    team_code = db.Column(db.String(10), unique=True)
+    score = db.Column(db.Integer, default=0)
     registered_at = db.Column(db.DateTime, default=datetime.utcnow)
