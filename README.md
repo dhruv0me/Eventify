@@ -1,80 +1,79 @@
-# 🎉 Eventify – Smart Event Management Portal
+# Eventify: The Ultimate Event Management Portal
 
-**Eventify** is a professional Event Management Portal designed for college fests, hackathons, and corporate events. It streamlines the entire lifecycle of an event, from discovery and registration to live scoring and leaderboards.
+**Eventify** is a high-performance, real-time event management platform designed to eliminate the chaos of organizing large-scale events like college fests, hackathons, and corporate conferences. 
 
----
-
-## 🚀 Key Features
-
-- **Centralized Event Discovery**: Browse all upcoming events with real-time status updates.
-- **Secure Authentication**: JWT-based login and registration system.
-- **Smart Registration**: One-click registration for solo events and team-based registration with unique invite codes.
-- **User Dashboard**: Personalized profile to track all registered events, team details, and live scores.
-- **Live Leaderboard**: Real-time rankings and score synchronization.
-- **Responsive Design**: Premium UI optimized for both desktop and mobile devices.
+By centralizing registration, team formation, and scoring, Eventify allows organizers to focus on the event experience while the platform handles the logistics.
 
 ---
 
-## ⚙️ Tech Stack
+## 🌟 Core Modules
 
-### Frontend
-- **Framework**: React.js with Vite
-- **Styling**: Tailwind CSS & Lucide Icons
-- **UI Components**: Radix UI (Shadcn UI)
-- **API Client**: Axios
+### 📋 Smart Registration
+- **One-Click Signups**: Seamless registration for solo participants.
+- **Dynamic Categories**: Support for Technical, Cultural, Gaming, and Live Concert events.
+- **Real-Time Availability**: Visual badges for "Filling Fast" or "Open" statuses.
 
-### Backend
-- **Language**: Python 3.x
-- **Framework**: Flask
-- **Database**: SQLite (SQLAlchemy ORM)
-- **Security**: PyJWT & Werkzeug Hash
+### 👥 Team Management
+- **Instant Team Creation**: Generate unique six-digit invite codes for group events.
+- **Seamless Coordination**: No more manual spreadsheets—teams manage themselves through the portal.
 
----
+### 📊 Live Leaderboard
+- **Instant Rankings**: Automated score updates synchronized across all participant devices.
+- **Tournament Tracking**: Dedicated views for competitive brackets and high-score rankings.
 
-## 🛠️ Getting Started
-
-### Prerequisites
-- Python 3.8+
-- Node.js & npm
-
-### Backend Setup
-1. Navigate to the `backend` directory:
-   ```bash
-   cd backend
-   ```
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Start the Flask server:
-   ```bash
-   python app.py
-   ```
-   *The API will run on `http://127.0.0.1:5000`*
-
-### Frontend Setup
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
-2. Start the development server:
-   ```bash
-   npm run dev
-   ```
-   *The app will run on `http://localhost:8081` (or next available port)*
+### 🏠 Personalized Dashboard
+- **My Events**: A centralized view for users to track their registrations, team codes, and performance.
+- **Profile Management**: Secure JWT-based session management for participant data.
 
 ---
 
-## 🎨 UI/UX Highlights
-- **Glassmorphism**: Modern backdrop-blur effects on navbars and cards.
-- **Gradient Aesthetics**: Premium color palettes using primary and primary-glow accents.
-- **Micro-Animations**: Subtle hover effects and loading states for a premium feel.
+## 💻 Tech Stack
+
+- **Frontend**: React 18, Vite, Tailwind CSS, Lucide Icons
+- **Backend**: Python 3 (Flask), SQLAlchemy ORM
+- **Database**: SQLite (Local Dev) / PostgreSQL ready
+- **Authentication**: Stateless JWT (JSON Web Tokens)
 
 ---
 
-## 🧑‍💻 Author
-**Dhruv** – Developer & Designer
+## � Installation & Setup
+
+### 1. Backend API Setup
+```bash
+# Navigate to backend
+cd backend
+
+# Install Python requirements
+pip install -r requirements.txt
+
+# Start the Flask server
+python app.py
+```
+*API runs by default on http://127.0.0.1:5000*
+
+### 2. Frontend Setup
+```bash
+# Install NPM dependencies
+npm install
+
+# Run the development server
+npm run dev
+```
+*Frontend runs by default on http://localhost:8081*
 
 ---
 
-> *One Platform. Every Event. Total Control.*
+## 🎨 Design Philosophy
+Eventify uses a **Modern Dark Aesthetic** with:
+- **Glassmorphism**: Backdrop blur effects for a premium, transparent feel.
+- **Vibrant Accents**: A curated palette of Primary Blue and Glow accents.
+- **Responsive Layout**: Fluid grid systems that work perfectly from mobile screens to 4K displays.
+
+---
+
+## 🧑‍💻 Developed By
+**Dhruv** — Lead Developer
+
+---
+
+> "One Platform. Every Event. Total Control."
