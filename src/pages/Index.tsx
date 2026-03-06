@@ -58,7 +58,7 @@ const Index = () => {
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <div className="inline-block">
             <div className="bg-accent/10 border border-accent/20 rounded-full px-4 py-2 text-sm font-medium text-accent mb-6">
-              🎃 Powering ECHÔNA '25 - Halloween Multiverse Festival
+              🚀 Smart Event Management Portal
             </div>
           </div>
           
@@ -72,7 +72,7 @@ const Index = () => {
           
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Centralized event registration, team management, and live leaderboards — all in one portal. 
-            From Halloween multiverse festivals to technical hackathons, we've got you covered.
+            From cultural festivals to technical hackathons, we've got you covered.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">

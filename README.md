@@ -1,7 +1,7 @@
 # 🎉 Eventify – Smart Event Management Portal for College Fests  
 
 ![Made with React](https://img.shields.io/badge/Made%20with-React-blue?logo=react)  
-![Built on Firebase](https://img.shields.io/badge/Built%20on-Firebase-orange?logo=firebase)  
+![Built on Supabase](https://img.shields.io/badge/Built%20on-Supabase-green?logo=supabase)  
 ![License](https://img.shields.io/badge/License-MIT-green)  
 ![Status](https://img.shields.io/badge/Status-Active-success)
 
@@ -12,7 +12,7 @@
 ## 🧩 Overview
 
 **Eventify** is a cloud-powered **Event Management Portal** for college fests, hackathons, and cultural events.  
-It simplifies registration, team creation, scoring, and announcements through a real-time **React + Firebase** platform.  
+It simplifies registration, team creation, scoring, and announcements through a real-time **React + Supabase** platform.  
 
 Colleges can manage multiple events, leaderboards, and announcements seamlessly — no spreadsheets, no confusion.
 
@@ -22,7 +22,7 @@ Colleges can manage multiple events, leaderboards, and announcements seamlessly 
 
 ✅ **Centralized Registration** – Register for solo or team events easily.  
 ✅ **Smart Team Formation** – Create or join teams via secure invite codes.  
-✅ **Live Leaderboard** – Real-time score updates with Firebase Cloud Functions.  
+✅ **Live Leaderboard** – Real-time score updates with Supabase Realtime.  
 ✅ **Role-Based Access** – Dashboards for Admins, Coordinators, and Participants.  
 ✅ **Push Notifications** – Live updates for schedules and results.  
 ✅ **Responsive Design** – Optimized for all devices.  
@@ -34,11 +34,10 @@ Colleges can manage multiple events, leaderboards, and announcements seamlessly 
 | Layer | Technology |
 |-------|-------------|
 | **Frontend** | React.js + Vite + Tailwind CSS |
-| **Backend** | Firebase (Auth, Firestore, Cloud Functions, Storage) |
-| **Hosting** | Firebase Hosting / Vercel |
-| **Realtime Database** | Firestore |
-| **Auth** | Google Sign-In / Email / OTP |
-| **Notifications** | Firebase Cloud Messaging |
+| **Backend** | Supabase (Auth, Postgres Database, Storage) |
+| **Hosting** | Vercel / Netlify |
+| **Database** | PostgreSQL via Supabase |
+| **Auth** | Supabase Auth (Email / OAuth) |
 
 ---
 
@@ -113,7 +112,7 @@ Traditional event management uses forms, chats, and spreadsheets — confusing a
 > Eventify is a smart, real-time Event Management Portal for college fests and hackathons. Built with React and Firebase, it enables centralized registration, team management, leaderboards, and announcements from one dashboard.
 
 **SEO Keywords:**  
-`college fest management system`, `firebase hackathon project`, `react firebase app`, `real-time leaderboard`, `college event portal`, `team management system`, `hackathon project idea`, `eventify web app`
+`college fest management system`, `supabase hackathon project`, `react supabase app`, `real-time leaderboard`, `college event portal`, `team management system`, `hackathon project idea`, `eventify web app`
 
 ---
 
@@ -123,8 +122,7 @@ Traditional event management uses forms, chats, and spreadsheets — confusing a
 ---
 
 ## 📊 Quick Stats
-- ⚡ Built in <36 hours during a hackathon sprint  
-- 🌐 Real-time synchronization (Firebase)  
+- 🌐 Real-time synchronization (Supabase)  
 - 💻 Cross-platform responsive UI  
 - 🔒 Secure authentication and roles  
 

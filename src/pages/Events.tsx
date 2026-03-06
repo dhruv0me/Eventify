@@ -34,10 +34,10 @@ const Events = () => {
     },
     {
       id: 3,
-      title: "Parmish Verma Live",
+      title: "Live Concert Night",
       category: "Concert",
-      description: "Popular Indian singer-songwriter live performance",
-      date: "November 8, 2025",
+      description: "Live musical performance by top artists",
+      date: "Upcoming",
       time: "09:00 PM onwards",
       location: "Main Stage",
       participants: 2000,
@@ -47,10 +47,10 @@ const Events = () => {
     },
     {
       id: 4,
-      title: "DJ Paroma Night",
+      title: "EDM Night",
       category: "Concert",
       description: "High-energy DJ set to end the fest on a high note",
-      date: "November 8, 2025",
+      date: "Upcoming",
       time: "11:00 PM onwards",
       location: "Main Stage",
       participants: 2000,
@@ -75,8 +75,8 @@ const Events = () => {
       id: 6,
       title: "Cosplay Competition",
       category: "Cultural",
-      description: "Embrace the Halloween Multiverse theme in style",
-      date: "November 7, 2025",
+      description: "Show off your creative side in this cosplay competition",
+      date: "Upcoming",
       time: "1:00 PM - 4:00 PM",
       location: "Central Arena",
       participants: 80,
@@ -148,14 +148,14 @@ const Events = () => {
         <div className="max-w-3xl mx-auto text-center space-y-4">
           <div className="inline-block">
             <div className="bg-accent/10 border border-accent/20 rounded-full px-4 py-2 text-sm font-medium text-accent mb-4">
-              🎃 ECHÔNA '25 - Halloween Multiverse Festival
+              🎉 Upcoming Events Dashboard
             </div>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold">
-            November 7-8, 2025
+            Discover & Register
           </h1>
           <p className="text-xl text-muted-foreground">
-            Anand International College of Engineering, Jaipur • Cash Prizes Worth ₹2 Lakh
+            Explore a wide range of technical, cultural, and gaming events happening this season.
           </p>
         </div>
       </section>
