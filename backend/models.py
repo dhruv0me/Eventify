@@ -23,6 +23,7 @@ class Event(db.Model):
     team_size = db.Column(db.String(50))
     status = db.Column(db.String(50), default='Open')
     prize_pool = db.Column(db.String(50))
+    is_visible = db.Column(db.Boolean, default=True)
 
 class Registration(db.Model):
     id = db.Column(db.Integer, primary_key=True)

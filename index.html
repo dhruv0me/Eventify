@@ -1,36 +1,141 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Eventify - Smart Event Management Portal</title>
-  <meta name="description"
-    content="Eventify is a smart, real-time Event Management Portal for college fests and hackathons. Built with React and Python (Flask), it enables centralized registration, team management, and live leaderboards." />
-  <meta name="author" content="Eventify" />
-  <meta name="keywords"
-    content="college fest management, event registration, flask hackathon, react python, team management, real-time leaderboard, college events, fest portal" />
-
-  <meta property="og:title" content="Eventify - Smart Event Management Portal" />
-  <meta property="og:description"
-    content="Centralized event registration, team management, and live leaderboards — all in one portal." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="/placeholder.svg" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@eventify" />
-  <meta name="twitter:title" content="Eventify - Smart Event Management Portal" />
-  <meta name="twitter:description" content="One Platform. Every Event. Total Control." />
-  <meta name="twitter:image" content="/placeholder.svg" />
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eventify - One Platform. Every Event. Total Control.</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
-<body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
+<body class="bg-gradient-hero">
+  <!-- Navbar -->
+  <nav class="glass-nav">
+    <div class="container py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2" style="text-decoration: none;">
+        <div class="glass flex items-center justify-center"
+          style="width: 32px; height: 32px; border-radius: 8px; background: var(--gradient-primary);">
+          <i data-lucide="sparkles" style="color: white; width: 18px; height: 18px;"></i>
+        </div>
+        <span class="text-gradient font-bold" style="font-size: 1.25rem;">Eventify</span>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <a href="events.html" class="btn btn-ghost">Events</a>
+        <div id="auth-nav">
+          <!-- Dynamic Auth Content -->
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="container py-20 text-center">
+    <div style="margin-bottom: 2rem;">
+      <span class="badge badge-accent">🚀 Smart Event Management Portal</span>
+    </div>
+
+    <h1 style="font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; margin-bottom: 2rem; line-height: 1.1;">
+      One Platform. <br>
+      <span class="text-gradient">Every Event.</span> <br>
+      Total Control.
+    </h1>
+
+    <p class="text-muted" style="font-size: 1.25rem; max-width: 600px; margin: 0 auto 3rem;">
+      Centralized event registration, team management, and live leaderboards — all in one portal.
+      From cultural festivals to technical hackathons.
+    </p>
+
+    <div class="flex justify-center gap-4">
+      <a href="auth.html" class="btn btn-hero" style="padding: 1rem 2rem; font-size: 1rem;">
+        Start Managing Events
+        <i data-lucide="chevron-right" style="width: 18px; height: 18px;"></i>
+      </a>
+      <a href="events.html" class="btn btn-outline" style="padding: 1rem 2rem; font-size: 1rem;">
+        Browse Events
+      </a>
+    </div>
+
+    <div class="flex justify-center gap-8 mt-16 text-sm text-muted">
+      <div class="flex items-center gap-2">
+        <div style="width: 8px; height: 8px; border-radius: 50%; background: hsl(var(--primary));"
+          class="animate-pulse"></div>
+        Real-time sync
+      </div>
+      <div class="flex items-center gap-2">
+        <div style="width: 8px; height: 8px; border-radius: 50%; background: hsl(var(--accent));" class="animate-pulse">
+        </div>
+        Role-based access
+      </div>
+      <div class="flex items-center gap-2">
+        <div style="width: 8px; height: 8px; border-radius: 50%; background: hsl(var(--primary-glow));"
+          class="animate-pulse"></div>
+        Cross-platform
+      </div>
+    </div>
+  </header>
+
+  <!-- Features Section placeholder -->
+  <section class="container py-20">
+    <div class="text-center" style="margin-bottom: 4rem;">
+      <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Everything You Need</h2>
+      <p class="text-muted">Automated platform to eliminate manual errors.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+      <div class="card">
+        <div
+          style="width: 48px; height: 48px; border-radius: 12px; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; padding: 12px;">
+          <i data-lucide="users" style="color: white;"></i>
+        </div>
+        <h3 style="margin-bottom: 0.5rem;">Team Management</h3>
+        <p class="text-sm text-muted">Create and join teams with unique invite codes.</p>
+      </div>
+      <div class="card">
+        <div
+          style="width: 48px; height: 48px; border-radius: 12px; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; padding: 12px;">
+          <i data-lucide="trophy" style="color: white;"></i>
+        </div>
+        <h3 style="margin-bottom: 0.5rem;">Live Leaderboards</h3>
+        <p class="text-sm text-muted">Real-time score updates across all devices.</p>
+      </div>
+      <div class="card">
+        <div
+          style="width: 48px; height: 48px; border-radius: 12px; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; padding: 12px;">
+          <i data-lucide="calendar" style="color: white;"></i>
+        </div>
+        <h3 style="margin-bottom: 0.5rem;">Event Scheduling</h3>
+        <p class="text-sm text-muted">Complete timelines and location tracking.</p>
+      </div>
+      <div class="card">
+        <div
+          style="width: 48px; height: 48px; border-radius: 12px; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; padding: 12px;">
+          <i data-lucide="zap" style="color: white;"></i>
+        </div>
+        <h3 style="margin-bottom: 0.5rem;">Instant Notifications</h3>
+        <p class="text-sm text-muted">Push alerts delivered the moment they're posted.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="border-top: 1px solid hsla(0, 0%, 100%, 0.05); margin-top: 4rem;">
+    <div class="container py-8 flex justify-between items-center text-sm text-muted">
+      <div class="flex items-center gap-2">
+        <i data-lucide="sparkles" style="width: 16px; height: 16px;"></i>
+        <span>Eventify</span>
+      </div>
+      <p>© 2025 Eventify. Built for college fests.</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
 </body>
 
 </html>

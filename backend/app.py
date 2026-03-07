@@ -42,6 +42,14 @@ def token_required(f):
         return f(current_user, *args, **kwargs)
     return decorated
 
+def admin_required(f):
+    @wraps(f)
+    def decorated(current_user, *args, **kwargs):
+        if current_user.role != 'admin':
+            return jsonify({'message': 'Admin privilege required!'}), 403
+        return f(current_user, *args, **kwargs)
+    return decorated
+
 # -----------------
 # Auth Routes
 # -----------------
@@ -100,7 +108,8 @@ def login():
 # -----------------
 @app.route('/api/events', methods=['GET'])
 def get_events():
-    events = Event.query.all()
+    # Only show visible events to regular users
+    events = Event.query.filter_by(is_visible=True).all()
     output = []
     for event in events:
         event_data = {
@@ -204,6 +213,125 @@ def get_leaderboard():
             'score': reg.score
         })
     return jsonify({'leaderboard': output})
+
+
+# -----------------
+# Admin Routes
+# -----------------
+@app.route('/api/admin/registrations', methods=['GET'])
+@token_required
+@admin_required
+def admin_get_all_registrations(current_user):
+    registrations = Registration.query.all()
+    output = []
+    for reg in registrations:
+        user = User.query.get(reg.user_id)
+        event = Event.query.get(reg.event_id)
+        output.append({
+            'registration_id': reg.id,
+            'user': {
+                'name': user.name,
+                'email': user.email
+            },
+            'event_title': event.title,
+            'team_name': reg.team_name,
+            'team_code': reg.team_code,
+            'score': reg.score,
+            'registered_at': reg.registered_at.isoformat()
+        })
+    return jsonify({'registrations': output})
+
+@app.route('/api/admin/events', methods=['GET'])
+@token_required
+@admin_required
+def admin_get_all_events(current_user):
+    events = Event.query.all()
+    output = []
+    for event in events:
+        output.append({
+            'id': event.id,
+            'title': event.title,
+            'category': event.category,
+            'date': event.date,
+            'time': event.time,
+            'location': event.location,
+            'status': event.status,
+            'is_visible': event.is_visible
+        })
+    return jsonify({'events': output})
+
+@app.route('/api/admin/registrations/score', methods=['POST'])
+@token_required
+@admin_required
+def admin_update_score(current_user):
+    data = request.get_json()
+    reg_id = data.get('registration_id')
+    new_score = data.get('score')
+    
+    registration = Registration.query.get(reg_id)
+    if not registration:
+        return jsonify({'message': 'Registration not found'}), 404
+        
+    registration.score = new_score
+    db.session.commit()
+    
+    return jsonify({'message': 'Score updated successfully', 'score': registration.score})
+
+@app.route('/api/admin/events', methods=['POST'])
+@token_required
+@admin_required
+def admin_create_event(current_user):
+    data = request.get_json()
+    new_event = Event(
+        title=data.get('title'),
+        category=data.get('category'),
+        description=data.get('description'),
+        date=data.get('date'),
+        time=data.get('time'),
+        location=data.get('location'),
+        participants=data.get('participants', 0),
+        team_size=data.get('teamSize'),
+        status=data.get('status', 'Open'),
+        prize_pool=data.get('prizePool')
+    )
+    db.session.add(new_event)
+    db.session.commit()
+    return jsonify({'message': 'Event created successfully', 'event_id': new_event.id}), 201
+
+@app.route('/api/admin/events/toggle-visibility', methods=['POST'])
+@token_required
+@admin_required
+def admin_toggle_visibility(current_user):
+    data = request.get_json()
+    event_id = data.get('event_id')
+    event = Event.query.get(event_id)
+    if not event:
+        return jsonify({'message': 'Event not found'}), 404
+        
+    event.is_visible = not event.is_visible
+    db.session.commit()
+    return jsonify({'message': 'Visibility updated', 'is_visible': event.is_visible})
+
+@app.route('/api/admin/events/<int:id>', methods=['DELETE'])
+@token_required
+@admin_required
+def admin_delete_event(current_user, id):
+    event = Event.query.get(id)
+    if not event:
+        return jsonify({'message': 'Event not found'}), 404
+        
+    # Also delete associated registrations
+    Registration.query.filter_by(event_id=id).delete()
+    db.session.delete(event)
+    db.session.commit()
+    return jsonify({'message': 'Event and associated registrations removed successfully'})
+
+@app.route('/api/admin/promote', methods=['POST'])
+@token_required
+def promote_to_admin(current_user):
+    current_user.role = 'admin'
+    db.session.commit()
+    return jsonify({'message': 'You are now an admin!', 'role': current_user.role})
 
 
 @app.route('/api/events/seed', methods=['POST'])

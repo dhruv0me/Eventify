@@ -1,0 +1,182 @@
+:root {
+    --background: 240 10% 4%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 6%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 5%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 263 70% 50%;
+    --primary-foreground: 0 0% 98%;
+    --primary-glow: 217 91% 60%;
+    --secondary: 240 4% 16%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 5% 26%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 24 95% 53%;
+    --accent-foreground: 0 0% 98%;
+    --border: 240 6% 20%;
+    --input: 240 6% 20%;
+    --ring: 263 70% 50%;
+    --radius: 0.75rem;
+
+    /* Design Tokens */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-hero: linear-gradient(180deg, hsl(var(--background)), hsl(263 70% 10%));
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-glow: 0 0 40px hsla(263, 70%, 50%, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border-color: hsl(var(--border));
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Base Layout */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Gradients */
+.bg-gradient-hero {
+    background: var(--gradient-hero);
+}
+
+.text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Glassmorphism */
+.glass {
+    background: hsla(240, 10%, 6%, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid hsla(0, 0%, 100%, 0.1);
+}
+
+.glass-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: hsla(240, 10%, 3.9%, 0.8);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid hsla(0, 0%, 100%, 0.05);
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    border: none;
+    text-decoration: none;
+    font-size: 0.875rem;
+    gap: 0.5rem;
+}
+
+.btn-hero {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: var(--shadow-glow);
+}
+
+.btn-hero:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.btn-ghost {
+    background: transparent;
+    color: hsl(var(--foreground));
+}
+
+.btn-ghost:hover {
+    background: hsla(0, 0%, 100%, 0.05);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--foreground));
+}
+
+.btn-outline:hover {
+    border-color: hsl(var(--primary));
+    background: hsla(var(--primary) / 0.1);
+}
+
+/* Cards */
+.card {
+    background: hsla(var(--card) / 0.5);
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition: var(--transition-smooth);
+}
+
+.card:hover {
+    border-color: hsla(var(--primary) / 0.5);
+    box-shadow: var(--shadow-glow);
+}
+
+/* Badges */
+.badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid transparent;
+}
+
+.badge-accent {
+    background: hsla(24, 95%, 53%, 0.1);
+    color: hsl(var(--accent));
+    border-color: hsla(24, 95%, 53%, 0.2);
+}
+
+/* Animations */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Utils */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.gap-2 { gap: 0.5rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+.text-center { text-align: center; }
+.text-sm { font-size: 0.875rem; }
+.text-muted { color: hsl(var(--muted-foreground)); }
+.font-bold { font-weight: 700; }
+.mt-4 { margin-top: 1rem; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+.py-20 { padding-top: 5rem; padding-bottom: 5rem; }
