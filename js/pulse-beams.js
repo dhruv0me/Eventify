@@ -118,6 +118,9 @@
     }
 
     function animateGradient(gradElement, pathElement, duration, delay) {
+        // On mobile, skip the continuous animation to save CPU
+        if (isMobile) return;
+
         const totalLen = pathElement.getTotalLength ? pathElement.getTotalLength() : 400;
         const windowSize = totalLen * 0.35;
         let start = null;

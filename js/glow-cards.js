@@ -97,30 +97,33 @@
         });
 
         // Global pointermove listener (efficient: one listener, many cards)
-        document.addEventListener('pointermove', (e) => {
-            cards.forEach((card) => {
-                const rect = card.getBoundingClientRect();
-                const cx = rect.left + rect.width / 2;
-                const cy = rect.top + rect.height / 2;
-                const mouseX = e.clientX;
-                const mouseY = e.clientY;
+        // Skip on touch devices — no hover = no glow tracking needed
+        if (!isTouchDevice) {
+            document.addEventListener('pointermove', (e) => {
+                cards.forEach((card) => {
+                    const rect = card.getBoundingClientRect();
+                    const cx = rect.left + rect.width / 2;
+                    const cy = rect.top + rect.height / 2;
+                    const mouseX = e.clientX;
+                    const mouseY = e.clientY;
 
-                const isNear = (
-                    mouseX > rect.left - PROXIMITY &&
-                    mouseX < rect.right + PROXIMITY &&
-                    mouseY > rect.top - PROXIMITY &&
-                    mouseY < rect.bottom + PROXIMITY
-                );
+                    const isNear = (
+                        mouseX > rect.left - PROXIMITY &&
+                        mouseX < rect.right + PROXIMITY &&
+                        mouseY > rect.top - PROXIMITY &&
+                        mouseY < rect.bottom + PROXIMITY
+                    );
 
-                if (isNear) {
-                    const angle = Math.atan2(mouseY - cy, mouseX - cx) * (180 / Math.PI) + 90;
-                    card.style.setProperty('--glow-angle', `${angle}deg`);
-                    card.style.setProperty('--glow-opacity', '1');
-                } else {
-                    card.style.setProperty('--glow-opacity', '0');
-                }
+                    if (isNear) {
+                        const angle = Math.atan2(mouseY - cy, mouseX - cx) * (180 / Math.PI) + 90;
+                        card.style.setProperty('--glow-angle', `${angle}deg`);
+                        card.style.setProperty('--glow-opacity', '1');
+                    } else {
+                        card.style.setProperty('--glow-opacity', '0');
+                    }
+                });
             });
-        });
+        }
     }
 
     // Run when DOM ready
