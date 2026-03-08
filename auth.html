@@ -13,8 +13,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         .auth-card {
-            max-width: 400px;
-            margin: 100px auto;
+            max-width: 420px;
+            margin: 80px auto;
             padding: 2.5rem;
         }
 
@@ -26,24 +26,7 @@
             display: block;
             margin-bottom: 0.5rem;
             font-size: 0.875rem;
-            color: hsl(var(--muted-foreground));
-        }
-
-        .form-control {
-            width: 100%;
-            background: rgba(12, 12, 22, 0.85);
-            border: 1px solid rgba(147, 51, 234, 0.2);
-            border-radius: calc(var(--radius) * 0.7);
-            padding: 0.75rem 1rem;
-            color: rgb(255, 255, 255);
-            outline: none;
-            transition: var(--transition-smooth);
-        }
-
-        .form-control:focus {
-            border-color: rgb(147, 51, 234);
-            box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.18);
-            background: rgba(10, 10, 20, 1);
+            color: var(--muted-foreground);
         }
 
         .tab-btn {
@@ -55,11 +38,16 @@
             font-weight: 600;
             font-size: 0.875rem;
             transition: var(--transition-smooth);
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            color: var(--muted-foreground);
         }
 
         .tab-btn.active {
-            border-color: rgb(147, 51, 234);
-            color: rgb(167, 139, 250);
+            border-bottom-color: var(--foreground);
+            color: var(--foreground);
         }
 
         .pulse-beam-wrap {
@@ -67,43 +55,42 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 1.5rem 0;
+            padding: 1rem 0;
         }
     </style>
 </head>
 
 <body class="bg-gradient-hero" style="min-height: 100vh;">
-    <!-- Decorative Shapes -->
     <div class="shape shape-1"></div>
     <div class="shape shape-2"></div>
 
     <nav class="glass-nav">
         <div class="container py-4 flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-2" style="text-decoration: none;">
-                <div class="glass flex items-center justify-center"
-                    style="width: 32px; height: 32px; border-radius: 8px; background: var(--gradient-primary);">
-                    <i data-lucide="sparkles" style="color: white; width: 18px; height: 18px;"></i>
+                <div
+                    style="width:32px;height:32px;border-radius:8px;background:var(--foreground);display:flex;align-items:center;justify-content:center;">
+                    <i data-lucide="sparkles" style="color:var(--background);width:18px;height:18px;"></i>
                 </div>
-                <span class="text-gradient font-bold" style="font-size: 1.25rem;">Eventify</span>
+                <span class="text-gradient font-bold" style="font-size:1.25rem;">Eventify</span>
             </a>
-            <a href="index.html" class="btn btn-ghost">
-                <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i>
-                Back to Home
-            </a>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="btn btn-ghost">
+                    <i data-lucide="arrow-left" style="width:16px;height:16px;"></i> Back to Home
+                </a>
+                <div class="theme-toggle" title="Toggle theme"></div>
+            </div>
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container" style="position:relative;z-index:1;">
         <div class="card auth-card">
-            <div class="flex gap-4 mb-8" style="border-bottom: 1px solid hsl(var(--border));">
+            <div class="flex gap-4 mb-8" style="border-bottom:1px solid var(--border);">
                 <div id="login-tab" class="tab-btn active" onclick="Auth.setMode('login')">Login</div>
                 <div id="register-tab" class="tab-btn" onclick="Auth.setMode('register')">Register</div>
             </div>
-
-            <h2 id="auth-title" style="margin-bottom: 1.5rem;">Sign In</h2>
-
+            <h2 id="auth-title" style="margin-bottom:1.5rem;">Sign In</h2>
             <form id="auth-form">
-                <div id="name-group" class="form-group" style="display: none;">
+                <div id="name-group" class="form-group" style="display:none;">
                     <label>Full Name</label>
                     <input type="text" id="name" class="form-control" placeholder="John Doe">
                 </div>
@@ -115,16 +102,14 @@
                     <label>Password</label>
                     <input type="password" id="password" class="form-control" placeholder="••••••••" required>
                 </div>
-
                 <div class="pulse-beam-wrap">
-                    <button type="submit" id="submit-btn" class="btn btn-hero" style="width: 100%; padding: 0.85rem;">
+                    <button type="submit" id="submit-btn" class="btn" style="width:100%;padding:0.85rem;">
                         Continue
                     </button>
                 </div>
             </form>
-
             <div id="error-msg"
-                style="color: hsl(var(--destructive)); font-size: 0.875rem; margin-top: 1rem; text-align: center; display: none;">
+                style="color:var(--destructive);font-size:0.875rem;margin-top:1rem;text-align:center;display:none;">
             </div>
         </div>
     </div>
@@ -132,10 +117,10 @@
     <script src="js/app.js"></script>
     <script src="js/shader-bg.js"></script>
     <script src="js/pulse-beams.js"></script>
+    <script src="js/theme-toggle.js"></script>
     <script>
         const Auth = {
             mode: 'login',
-
             setMode(mode) {
                 this.mode = mode;
                 document.getElementById('login-tab').classList.toggle('active', mode === 'login');
@@ -144,7 +129,6 @@
                 document.getElementById('auth-title').innerText = mode === 'login' ? 'Sign In' : 'Create Account';
                 document.getElementById('submit-btn').innerText = mode === 'login' ? 'Sign In' : 'Sign Up';
             },
-
             async handleSubmit(e) {
                 e.preventDefault();
                 const email = document.getElementById('email').value;
@@ -152,30 +136,23 @@
                 const name = document.getElementById('name').value;
                 const errorEl = document.getElementById('error-msg');
                 const btn = document.getElementById('submit-btn');
-
                 errorEl.style.display = 'none';
                 btn.disabled = true;
                 btn.innerText = 'Processing...';
-
                 try {
                     const endpoint = this.mode === 'login' ? '/auth/login' : '/auth/register';
                     const payload = { email, password };
                     if (this.mode === 'register') payload.full_name = name;
-
                     const response = await fetch(`${API_URL}${endpoint}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
-
                     const data = await response.json();
-
                     if (!response.ok) throw new Error(data.message || 'Something went wrong');
-
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     window.location.href = 'index.html';
-
                 } catch (err) {
                     errorEl.innerText = err.message;
                     errorEl.style.display = 'block';
@@ -184,7 +161,6 @@
                 }
             }
         };
-
         document.getElementById('auth-form').addEventListener('submit', (e) => Auth.handleSubmit(e));
     </script>
 </body>

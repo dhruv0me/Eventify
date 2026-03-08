@@ -8,33 +8,28 @@
   <meta name="description"
     content="Eventify — centralized event registration, team management, and live leaderboards for college fests.">
   <link rel="stylesheet" href="css/style.css">
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Three.js for Shader Background -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
-    /* ── FAQ Accordion ─────────────────────────────── */
+    /* ── FAQ Accordion ── */
     .faq-section {
       position: relative;
       z-index: 1;
     }
 
     .faq-grid {
-      display: grid;
-      grid-template-columns: 1fr;
       max-width: 640px;
       margin: 0 auto;
       border-radius: var(--radius);
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
     }
 
     .faq-item {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid var(--border);
     }
 
     .faq-item:last-child {
@@ -47,9 +42,9 @@
       align-items: center;
       justify-content: space-between;
       padding: 1rem 1.25rem;
-      background: rgba(12, 12, 22, 0.7);
+      background: var(--card);
       border: none;
-      color: hsl(var(--foreground));
+      color: var(--foreground);
       cursor: pointer;
       font-family: inherit;
       font-size: 0.95rem;
@@ -60,7 +55,11 @@
     }
 
     .faq-trigger:hover {
-      background: rgba(var(--rgb-purple), 0.1);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    body.light-mode .faq-trigger:hover {
+      background: rgba(0, 0, 0, 0.04);
     }
 
     .faq-trigger-left {
@@ -83,7 +82,7 @@
       transition: transform 0.3s ease;
       width: 18px;
       height: 18px;
-      color: hsl(var(--muted-foreground));
+      color: var(--muted-foreground);
       flex-shrink: 0;
     }
 
@@ -95,16 +94,15 @@
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-      background: rgba(8, 8, 16, 0.6);
+      background: var(--accent);
     }
 
     .faq-item.open>.faq-panel {
       max-height: 600px;
     }
 
-    /* Sub-accordion */
     .faq-sub {
-      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      border-top: 1px solid var(--border);
       padding: 0.65rem 1.25rem 0.65rem 4rem;
     }
 
@@ -114,7 +112,7 @@
       gap: 0.5rem;
       background: none;
       border: none;
-      color: hsl(var(--foreground));
+      color: var(--foreground);
       cursor: pointer;
       font-family: inherit;
       font-weight: 600;
@@ -128,7 +126,7 @@
       width: 14px;
       height: 14px;
       transition: transform 0.25s ease;
-      color: hsl(var(--muted-foreground));
+      color: var(--muted-foreground);
     }
 
     .faq-sub.open .faq-sub-trigger .sub-chevron {
@@ -139,7 +137,7 @@
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.3s ease;
-      color: hsl(var(--muted-foreground));
+      color: var(--muted-foreground);
       font-size: 0.84rem;
       line-height: 1.6;
       padding-left: 1.4rem;
@@ -151,18 +149,20 @@
       padding-bottom: 0.5rem;
     }
 
-    /* Pulse beam wrapper */
     .pulse-beam-wrap {
       padding: 2rem 3rem;
       border-radius: var(--radius);
       background: rgba(5, 5, 15, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+    }
+
+    body.light-mode .pulse-beam-wrap {
+      background: rgba(245, 245, 245, 0.5);
     }
   </style>
 </head>
 
 <body class="bg-gradient-hero">
-  <!-- Decorative Shapes -->
   <div class="shape shape-1"></div>
   <div class="shape shape-2"></div>
 
@@ -170,49 +170,44 @@
   <nav class="glass-nav">
     <div class="container py-4 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-2" style="text-decoration: none;">
-        <div class="glass flex items-center justify-center"
-          style="width: 32px; height: 32px; border-radius: 8px; background: var(--gradient-primary);">
-          <i data-lucide="sparkles" style="color: white; width: 18px; height: 18px;"></i>
+        <div
+          style="width: 32px; height: 32px; border-radius: 8px; background: var(--foreground); display:flex; align-items:center; justify-content:center;">
+          <i data-lucide="sparkles" style="color: var(--background); width: 18px; height: 18px;"></i>
         </div>
         <span class="text-gradient font-bold" style="font-size: 1.25rem;">Eventify</span>
       </a>
-
       <div class="flex items-center gap-4">
         <a href="events.html" class="btn btn-ghost">Events</a>
-        <div id="auth-nav">
-          <!-- Dynamic Auth Content -->
-        </div>
+        <div id="auth-nav"></div>
+        <div class="theme-toggle" title="Toggle theme"></div>
       </div>
     </div>
   </nav>
 
-  <!-- Hero Section -->
+  <!-- Hero -->
   <header class="container py-20 text-center" style="position:relative;z-index:1;">
     <div style="margin-bottom: 2rem;">
       <span class="badge badge-accent">🚀 Smart Event Management Portal</span>
     </div>
-
     <h1 style="font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; margin-bottom: 2rem; line-height: 1.1;">
       One Platform. <br>
       <span class="text-gradient">Every Event.</span> <br>
       Total Control.
     </h1>
-
     <p class="text-muted" style="font-size: 1.25rem; max-width: 600px; margin: 0 auto 3rem;">
       Centralized event registration, team management, and live leaderboards — all in one portal.
       From cultural festivals to technical hackathons.
     </p>
 
-    <!-- ★ Pulse-beam wrapped CTA buttons -->
     <div class="flex justify-center gap-6" style="flex-wrap:wrap;">
       <div class="pulse-beam-wrap">
-        <a href="auth.html" class="btn btn-hero" style="padding: 1rem 2.25rem; font-size: 1.05rem;">
+        <a href="auth.html" class="btn" style="padding: 1rem 2.25rem; font-size: 1.05rem;">
           Start Managing Events
           <i data-lucide="chevron-right" style="width: 18px; height: 18px;"></i>
         </a>
       </div>
       <div class="pulse-beam-wrap">
-        <a href="events.html" class="btn btn-outline" style="padding: 1rem 2.25rem; font-size: 1.05rem;">
+        <a href="events.html" class="btn btn-variant" style="padding: 1rem 2.25rem; font-size: 1.05rem;">
           Browse Events
         </a>
       </div>
@@ -220,206 +215,165 @@
 
     <div class="flex justify-center gap-8 mt-16 text-sm text-muted" style="flex-wrap:wrap;">
       <div class="flex items-center gap-2">
-        <div style="width: 8px; height: 8px; border-radius: 50%; background: rgb(var(--rgb-purple));"
-          class="animate-pulse"></div>
+        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--foreground);" class="animate-pulse">
+        </div>
         Real-time sync
       </div>
       <div class="flex items-center gap-2">
-        <div style="width: 8px; height: 8px; border-radius: 50%; background: hsl(var(--accent));" class="animate-pulse">
-        </div>
+        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--muted-foreground);"
+          class="animate-pulse"></div>
         Role-based access
       </div>
       <div class="flex items-center gap-2">
-        <div style="width: 8px; height: 8px; border-radius: 50%; background: rgb(var(--rgb-pink));"
-          class="animate-pulse"></div>
+        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--foreground);" class="animate-pulse">
+        </div>
         Cross-platform
       </div>
     </div>
   </header>
 
-  <!-- Features Section — ★ Glow cards -->
+  <!-- Features — Glow Cards -->
   <section class="container py-20" style="position:relative;z-index:1;">
     <div class="text-center" style="margin-bottom: 4rem;">
       <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Everything You Need</h2>
       <p class="text-muted">Automated platform to eliminate manual errors.</p>
     </div>
-
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-      <!-- Card 1 -->
       <div class="card glow-card">
         <div
-          style="width: 48px; height: 48px; border-radius: 12px; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; padding: 12px;">
-          <i data-lucide="users" style="color: white;"></i>
+          style="width:48px;height:48px;border-radius:12px;background:var(--foreground);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
+          <i data-lucide="users" style="color:var(--background);"></i>
         </div>
-        <h3 style="margin-bottom: 0.5rem;">Team Management</h3>
+        <h3 style="margin-bottom:0.5rem;">Team Management</h3>
         <p class="text-sm text-muted">Create and join teams with unique invite codes.</p>
       </div>
-      <!-- Card 2 -->
       <div class="card glow-card">
         <div
-          style="width: 48px; height: 48px; border-radius: 12px; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; padding: 12px;">
-          <i data-lucide="trophy" style="color: white;"></i>
+          style="width:48px;height:48px;border-radius:12px;background:var(--foreground);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
+          <i data-lucide="trophy" style="color:var(--background);"></i>
         </div>
-        <h3 style="margin-bottom: 0.5rem;">Live Leaderboards</h3>
+        <h3 style="margin-bottom:0.5rem;">Live Leaderboards</h3>
         <p class="text-sm text-muted">Real-time score updates across all devices.</p>
       </div>
-      <!-- Card 3 -->
       <div class="card glow-card">
         <div
-          style="width: 48px; height: 48px; border-radius: 12px; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; padding: 12px;">
-          <i data-lucide="calendar" style="color: white;"></i>
+          style="width:48px;height:48px;border-radius:12px;background:var(--foreground);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
+          <i data-lucide="calendar" style="color:var(--background);"></i>
         </div>
-        <h3 style="margin-bottom: 0.5rem;">Event Scheduling</h3>
+        <h3 style="margin-bottom:0.5rem;">Event Scheduling</h3>
         <p class="text-sm text-muted">Complete timelines and location tracking.</p>
       </div>
-      <!-- Card 4 -->
       <div class="card glow-card">
         <div
-          style="width: 48px; height: 48px; border-radius: 12px; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; padding: 12px;">
-          <i data-lucide="zap" style="color: white;"></i>
+          style="width:48px;height:48px;border-radius:12px;background:var(--foreground);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
+          <i data-lucide="zap" style="color:var(--background);"></i>
         </div>
-        <h3 style="margin-bottom: 0.5rem;">Instant Notifications</h3>
+        <h3 style="margin-bottom:0.5rem;">Instant Notifications</h3>
         <p class="text-sm text-muted">Push alerts delivered the moment they're posted.</p>
       </div>
     </div>
   </section>
 
-  <!-- ★ FAQ Accordion Section -->
+  <!-- FAQ Accordion -->
   <section class="container py-20 faq-section">
-    <div class="text-center" style="margin-bottom: 3rem;">
-      <h2 style="font-size: 2.25rem; margin-bottom: 0.75rem;">Frequently Asked Questions</h2>
+    <div class="text-center" style="margin-bottom:3rem;">
+      <h2 style="font-size:2.25rem;margin-bottom:0.75rem;">Frequently Asked Questions</h2>
       <p class="text-muted">Everything you need to know about Eventify.</p>
     </div>
-
     <div class="faq-grid" id="faq-accordion">
-      <!-- Item 1 -->
       <div class="faq-item open">
         <button class="faq-trigger" onclick="toggleFAQ(this)">
           <span class="faq-trigger-left">
-            <span class="faq-icon-box" style="background: rgba(59,130,246,0.12); color: rgb(96,165,250);">
+            <span class="faq-icon-box" style="background:rgba(59,130,246,0.12);color:rgb(96,165,250);">
               <i data-lucide="file-text" style="width:20px;height:20px;"></i>
-            </span>
-            Event Registration
+            </span>Event Registration
           </span>
           <i data-lucide="chevron-down" class="faq-chevron"></i>
         </button>
         <div class="faq-panel">
           <div class="faq-sub open">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)">
-              <i data-lucide="chevron-down" class="sub-chevron"></i>
-              How to Register
-            </button>
-            <div class="faq-sub-content">
-              Visit the Events page, choose your event, and click Register. You'll receive a confirmation instantly.
-            </div>
+            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
+                class="sub-chevron"></i>How to Register</button>
+            <div class="faq-sub-content">Visit the Events page, choose your event, and click Register. You'll receive a
+              confirmation instantly.</div>
           </div>
           <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)">
-              <i data-lucide="chevron-down" class="sub-chevron"></i>
-              Team Registration
-            </button>
-            <div class="faq-sub-content">
-              Create a team using a unique invite code and share it with teammates to join together.
-            </div>
+            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
+                class="sub-chevron"></i>Team Registration</button>
+            <div class="faq-sub-content">Create a team using a unique invite code and share it with teammates to join
+              together.</div>
           </div>
         </div>
       </div>
-
-      <!-- Item 2 -->
       <div class="faq-item">
         <button class="faq-trigger" onclick="toggleFAQ(this)">
           <span class="faq-trigger-left">
-            <span class="faq-icon-box" style="background: rgba(251,146,60,0.12); color: rgb(251,146,60);">
+            <span class="faq-icon-box" style="background:rgba(251,146,60,0.12);color:rgb(251,146,60);">
               <i data-lucide="folder" style="width:20px;height:20px;"></i>
-            </span>
-            Leaderboards & Scoring
+            </span>Leaderboards & Scoring
           </span>
           <i data-lucide="chevron-down" class="faq-chevron"></i>
         </button>
         <div class="faq-panel">
           <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)">
-              <i data-lucide="chevron-down" class="sub-chevron"></i>
-              Live Score Updates
-            </button>
-            <div class="faq-sub-content">
-              Scores sync in real-time across all devices the moment they are updated by organizers.
-            </div>
+            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
+                class="sub-chevron"></i>Live Score Updates</button>
+            <div class="faq-sub-content">Scores sync in real-time across all devices the moment they are updated by
+              organizers.</div>
           </div>
           <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)">
-              <i data-lucide="chevron-down" class="sub-chevron"></i>
-              Score Disputes
-            </button>
-            <div class="faq-sub-content">
-              Contact your event organizer directly through the Notifications panel for any score corrections.
-            </div>
+            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
+                class="sub-chevron"></i>Score Disputes</button>
+            <div class="faq-sub-content">Contact your event organizer directly through the Notifications panel for any
+              score corrections.</div>
           </div>
         </div>
       </div>
-
-      <!-- Item 3 -->
       <div class="faq-item">
         <button class="faq-trigger" onclick="toggleFAQ(this)">
           <span class="faq-trigger-left">
-            <span class="faq-icon-box" style="background: rgba(45,212,191,0.12); color: rgb(45,212,191);">
+            <span class="faq-icon-box" style="background:rgba(45,212,191,0.12);color:rgb(45,212,191);">
               <i data-lucide="handshake" style="width:20px;height:20px;"></i>
-            </span>
-            Team Management
+            </span>Team Management
           </span>
           <i data-lucide="chevron-down" class="faq-chevron"></i>
         </button>
         <div class="faq-panel">
           <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)">
-              <i data-lucide="chevron-down" class="sub-chevron"></i>
-              Creating a Team
-            </button>
-            <div class="faq-sub-content">
-              Go to Team Management, click 'Create Team', set a name, and share your unique invite code.
-            </div>
+            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
+                class="sub-chevron"></i>Creating a Team</button>
+            <div class="faq-sub-content">Go to Team Management, click 'Create Team', set a name, and share your unique
+              invite code.</div>
           </div>
           <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)">
-              <i data-lucide="chevron-down" class="sub-chevron"></i>
-              Roles & Access
-            </button>
-            <div class="faq-sub-content">
-              Team leads have admin access. Members can view schedules and scores based on role-based permissions.
-            </div>
+            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
+                class="sub-chevron"></i>Roles & Access</button>
+            <div class="faq-sub-content">Team leads have admin access. Members can view schedules and scores based on
+              role-based permissions.</div>
           </div>
         </div>
       </div>
-
-      <!-- Item 4 -->
       <div class="faq-item">
         <button class="faq-trigger" onclick="toggleFAQ(this)">
           <span class="faq-trigger-left">
-            <span class="faq-icon-box" style="background: rgba(239,68,68,0.12); color: rgb(252,165,165);">
+            <span class="faq-icon-box" style="background:rgba(239,68,68,0.12);color:rgb(252,165,165);">
               <i data-lucide="users" style="width:20px;height:20px;"></i>
-            </span>
-            Support & Contact
+            </span>Support & Contact
           </span>
           <i data-lucide="chevron-down" class="faq-chevron"></i>
         </button>
         <div class="faq-panel">
           <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)">
-              <i data-lucide="chevron-down" class="sub-chevron"></i>
-              Get Help
-            </button>
-            <div class="faq-sub-content">
-              Use the Notifications panel for instant alerts or contact your college fest organizer directly.
-            </div>
+            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
+                class="sub-chevron"></i>Get Help</button>
+            <div class="faq-sub-content">Use the Notifications panel for instant alerts or contact your college fest
+              organizer directly.</div>
           </div>
           <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)">
-              <i data-lucide="chevron-down" class="sub-chevron"></i>
-              Platform Issues
-            </button>
-            <div class="faq-sub-content">
-              For technical issues with Eventify, reach out via the support link in the footer of the site.
-            </div>
+            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
+                class="sub-chevron"></i>Platform Issues</button>
+            <div class="faq-sub-content">For technical issues with Eventify, reach out via the support link in the
+              footer of the site.</div>
           </div>
         </div>
       </div>
@@ -427,36 +381,29 @@
   </section>
 
   <!-- Footer -->
-  <footer style="border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: 4rem; position:relative; z-index:1;">
+  <footer style="border-top:1px solid var(--border);margin-top:4rem;position:relative;z-index:1;">
     <div class="container py-8 flex justify-between items-center text-sm text-muted">
       <div class="flex items-center gap-2">
-        <i data-lucide="sparkles" style="width: 16px; height: 16px;"></i>
+        <i data-lucide="sparkles" style="width:16px;height:16px;"></i>
         <span>Eventify</span>
       </div>
       <p>&copy; 2025 Eventify. Built for college fests.</p>
     </div>
   </footer>
 
-  <!-- Scripts -->
   <script src="js/app.js"></script>
   <script src="js/shader-bg.js"></script>
   <script src="js/glow-cards.js"></script>
   <script src="js/pulse-beams.js"></script>
+  <script src="js/theme-toggle.js"></script>
   <script>
-    // FAQ Accordion logic
     function toggleFAQ(btn) {
       const item = btn.parentElement;
       const wasOpen = item.classList.contains('open');
-      // Close all items (accordion behavior)
       document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-      // Toggle current
       if (!wasOpen) item.classList.add('open');
     }
-
-    function toggleSubFAQ(btn) {
-      const sub = btn.parentElement;
-      sub.classList.toggle('open');
-    }
+    function toggleSubFAQ(btn) { btn.parentElement.classList.toggle('open'); }
   </script>
 </body>
 
