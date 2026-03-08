@@ -3,6 +3,9 @@
 // Usage: Add class "glow-card" to any card element.
 // ═══════════════════════════════════════════════════════════════════
 (function () {
+    // Auto-disable on touch devices (no hover = no pointermove tracking needed)
+    const isTouchDevice = window.matchMedia('(hover: none)').matches;
+
     // Settings
     const SPREAD = 60;   // degrees of visible arc
     const PROXIMITY = 80;   // px — activation distance outside card

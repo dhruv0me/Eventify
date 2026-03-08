@@ -3,6 +3,7 @@
 // Usage: Add class "pulse-beam-wrap" to a wrapper div around a button.
 // ═══════════════════════════════════════════════════════════════════
 (function () {
+    const isMobile = window.innerWidth < 768;
 
     const BEAM_CONFIG = [
         {
