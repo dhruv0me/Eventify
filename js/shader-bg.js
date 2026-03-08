@@ -1,7 +1,8 @@
 // ═══════════════════════════════════════════════════════════════════
 // Eventify — Animated Aurora Shader Background (Three.js WebGL)
 // Plays behind all page content as a fixed full-screen canvas.
-// Mobile-optimized: reduced iterations, lower resolution, throttled resize.
+// Mobile-optimized + GPU-smart: delta-time, visibility pause,
+// reduced iterations on phones, disabled unused buffers.
 // ═══════════════════════════════════════════════════════════════════
 (function () {
   if (!window.THREE) {
@@ -27,7 +28,9 @@
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
   const renderer = new THREE.WebGLRenderer({
     antialias: !isMobile,
-    alpha: true,
+    alpha: false,            // No transparency needed = faster compositing
+    stencil: false,          // Disable unused stencil buffer
+    depth: false,            // Disable unused depth buffer
     powerPreference: 'high-performance',
   });
 
@@ -124,25 +127,39 @@
     },
     vertexShader,
     fragmentShader,
-    transparent: true,
+    transparent: false,
   });
 
   const geometry = new THREE.PlaneGeometry(2, 2);
   scene.add(new THREE.Mesh(geometry, material));
 
-  // Slower tick on mobile (0.008 vs 0.016)
-  const timeDelta = isMobile ? 0.008 : 0.016;
-
+  // ── Delta-time animation (frame-rate independent) ──
   let raf;
-  function tick() {
-    material.uniforms.iTime.value += timeDelta;
+  let lastTime = 0;
+  const speedMultiplier = isMobile ? 0.5 : 1.0;
+
+  function tick(timestamp) {
+    if (!lastTime) lastTime = timestamp;
+    const delta = Math.min((timestamp - lastTime) / 1000, 0.05); // cap at 50ms
+    lastTime = timestamp;
+    material.uniforms.iTime.value += delta * speedMultiplier;
     renderer.render(scene, camera);
     raf = requestAnimationFrame(tick);
   }
 
+  // ── Pause when tab hidden — saves GPU ──
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+      cancelAnimationFrame(raf);
+    } else {
+      lastTime = 0; // reset delta so no time-jump on resume
+      raf = requestAnimationFrame(tick);
+    }
+  });
+
   // Delay animation start on mobile to avoid blocking first paint
   const startDelay = isMobile ? 500 : 0;
-  setTimeout(() => tick(), startDelay);
+  setTimeout(() => { raf = requestAnimationFrame(tick); }, startDelay);
 
   // Throttle resize on mobile
   let resizeTimer;

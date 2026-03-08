@@ -98,8 +98,13 @@
 
         // Global pointermove listener (efficient: one listener, many cards)
         // Skip on touch devices — no hover = no glow tracking needed
+        // Throttled to 60fps max to avoid excessive repaints
+        let lastMoveTime = 0;
         if (!isTouchDevice) {
             document.addEventListener('pointermove', (e) => {
+                const now = performance.now();
+                if (now - lastMoveTime < 16) return; // 60fps cap
+                lastMoveTime = now;
                 cards.forEach((card) => {
                     const rect = card.getBoundingClientRect();
                     const cx = rect.left + rect.width / 2;

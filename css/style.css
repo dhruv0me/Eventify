@@ -1076,3 +1076,22 @@ body.light-mode ::-webkit-scrollbar-thumb:hover {
 body.light-mode ::-webkit-scrollbar-track {
     background: var(--background);
 }
+
+/* ─── GPU Performance Hints ─────────────────────────────────────── */
+canvas {
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+.btn {
+    contain: layout style;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+[data-state="open"],
+[data-state="closed"] {
+    transform: translateZ(0);
+}
