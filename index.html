@@ -6,427 +6,922 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#000000">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Eventify - One Platform. Every Event. Total Control.</title>
+  <title>Eventify — One Platform. Every Event. Total Control.</title>
   <meta name="description"
-    content="Eventify — register for events, build your team, and track live scores. Everything your college fest needs, in one place.">
-  <link rel="stylesheet" href="css/style.css">
+    content="Register for events, build your team, and track live scores — everything your college fest needs.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            surface: { DEFAULT: '#0a0a0a', light: '#f5f5f5' },
+            border: { DEFAULT: '#222', light: '#ddd' }
+          }
+        }
+      }
+    }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <style>
-    /* ── FAQ Accordion ── */
-    .faq-section {
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    body.light {
+      background: #fff;
+      color: #000;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #000;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #333;
+      border-radius: 4px;
+    }
+
+    body.light ::-webkit-scrollbar-track {
+      background: #fff;
+    }
+
+    body.light ::-webkit-scrollbar-thumb {
+      background: #bbb;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: .7;
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .anim-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .anim-pulse {
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+
+    .anim-slide {
+      animation: slideUp .6s ease forwards;
+    }
+
+    .anim-spin {
+      animation: spin 1s linear infinite;
+    }
+
+    .glass {
+      background: rgba(0, 0, 0, .8);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+
+    body.light .glass {
+      background: rgba(255, 255, 255, .85);
+    }
+
+    .text-grad {
+      background: linear-gradient(135deg, #fff, #888);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    body.light .text-grad {
+      background: linear-gradient(135deg, #000, #555);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .gbtn {
+      background: linear-gradient(135deg, #000, #08012c, #4e1e40, #70464e, #88394c);
+      border: 1px solid rgba(255, 255, 255, .12);
+      transition: all .3s;
+    }
+
+    .gbtn:hover {
+      background: linear-gradient(135deg, #c96287, #c66c64, #cc7d23, #37140a, #000);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(200, 100, 130, .3);
+    }
+
+    .gbtn-alt {
+      background: linear-gradient(135deg, #000022, #1f3f6d, #469396, #f1ffa5, #000);
+      border: 1px solid rgba(255, 255, 255, .12);
+      transition: all .3s;
+    }
+
+    .gbtn-alt:hover {
+      background: linear-gradient(135deg, #000020, #f1ffa5, #469396, #1f3f6d, #000);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(70, 147, 150, .3);
+    }
+
+    .card-glow {
       position: relative;
-      z-index: 1;
+      transition: all .35s cubic-bezier(.16, 1, .3, 1);
     }
 
-    .faq-grid {
-      max-width: 640px;
-      margin: 0 auto;
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--border);
+    .card-glow:hover {
+      border-color: #444;
+      box-shadow: 0 12px 48px rgba(0, 0, 0, .5);
+      transform: translateY(-4px);
     }
 
-    .faq-item {
-      border-bottom: 1px solid var(--border);
+    body.light .card-glow:hover {
+      box-shadow: 0 12px 48px rgba(0, 0, 0, .1);
     }
 
-    .faq-item:last-child {
-      border-bottom: none;
+    .shape {
+      position: absolute;
+      filter: blur(80px);
+      z-index: 0;
+      opacity: .12;
+      border-radius: 50%;
+      animation: float 12s ease-in-out infinite alternate;
     }
 
-    .faq-trigger {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 1.25rem;
-      background: var(--card);
-      border: none;
-      color: var(--foreground);
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 0.95rem;
-      font-weight: 600;
-      transition: background 0.25s ease;
-      gap: 0.75rem;
-      text-align: left;
+    .toast-enter {
+      animation: slideUp .35s ease;
     }
 
-    .faq-trigger:hover {
-      background: rgba(255, 255, 255, 0.04);
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #555;
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, .08);
     }
 
-    body.light-mode .faq-trigger:hover {
-      background: rgba(0, 0, 0, 0.04);
-    }
-
-    .faq-trigger-left {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-    }
-
-    .faq-icon-box {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .faq-chevron {
-      transition: transform 0.3s ease;
-      width: 18px;
-      height: 18px;
-      color: var(--muted-foreground);
-      flex-shrink: 0;
-    }
-
-    .faq-item.open>.faq-trigger .faq-chevron {
-      transform: rotate(180deg);
-    }
-
-    .faq-panel {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-      background: var(--accent);
-    }
-
-    .faq-item.open>.faq-panel {
-      max-height: 600px;
-    }
-
-    .faq-sub {
-      border-top: 1px solid var(--border);
-      padding: 0.65rem 1.25rem 0.65rem 4rem;
-    }
-
-    .faq-sub-trigger {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: none;
-      border: none;
-      color: var(--foreground);
-      cursor: pointer;
-      font-family: inherit;
-      font-weight: 600;
-      font-size: 0.875rem;
-      width: 100%;
-      text-align: left;
-      padding: 0.3rem 0;
-    }
-
-    .faq-sub-trigger .sub-chevron {
-      width: 14px;
-      height: 14px;
-      transition: transform 0.25s ease;
-      color: var(--muted-foreground);
-    }
-
-    .faq-sub.open .faq-sub-trigger .sub-chevron {
-      transform: rotate(180deg);
-    }
-
-    .faq-sub-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-      color: var(--muted-foreground);
-      font-size: 0.84rem;
-      line-height: 1.6;
-      padding-left: 1.4rem;
-    }
-
-    .faq-sub.open .faq-sub-content {
-      max-height: 200px;
-      padding-top: 0.4rem;
-      padding-bottom: 0.5rem;
-    }
-
-    .pulse-beam-wrap {
-      padding: 2rem 3rem;
-      border-radius: var(--radius);
-      background: rgba(5, 5, 15, 0.5);
-      border: 1px solid var(--border);
-    }
-
-    body.light-mode .pulse-beam-wrap {
-      background: rgba(245, 245, 245, 0.5);
+    body.light input:focus,
+    body.light select:focus,
+    body.light textarea:focus {
+      border-color: #aaa;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, .06);
     }
   </style>
 </head>
 
-<body class="bg-gradient-hero">
-  <div class="shape shape-1"></div>
-  <div class="shape shape-2"></div>
+<body class="dark">
+  <div id="root"></div>
+  <script>
+    // Firebase Init
+    const firebaseConfig = {
+      apiKey: "AIzaSyDb6HpSRD3hqH-lp94hPlnhPwZRTuyqoSU",
+      authDomain: "gen-lang-client-0364461362.firebaseapp.com",
+      projectId: "gen-lang-client-0364461362",
+      storageBucket: "gen-lang-client-0364461362.firebasestorage.app",
+      messagingSenderId: "47146892364",
+      appId: "1:47146892364:web:639196a02afe87feba08e9",
+      measurementId: "G-JERK1C71NE"
+    };
+    const fbApp = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+  </script>
+  <script type="text/babel" data-type="module">
+    const { useState, useEffect, useCallback, createContext, useContext } = React;
 
-  <!-- Navbar -->
-  <nav class="glass-nav">
-    <div class="container py-4 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-2" style="text-decoration: none;">
-        <div
-          style="width: 32px; height: 32px; border-radius: 8px; background: var(--foreground); display:flex; align-items:center; justify-content:center;">
-          <i data-lucide="sparkles" style="color: var(--background); width: 18px; height: 18px;"></i>
-        </div>
-        <span class="text-gradient font-bold" style="font-size: 1.25rem;">Eventify</span>
-      </a>
-      <div class="flex items-center gap-4">
-        <a href="events.html" class="btn btn-ghost">Events</a>
-        <div id="auth-nav"></div>
-        <div class="theme-toggle" title="Toggle theme"></div>
-      </div>
-    </div>
-  </nav>
+    /* ═══════ CONTEXTS ═══════ */
+    const AuthCtx = createContext(null);
+    const ThemeCtx = createContext(null);
 
-  <!-- Hero -->
-  <header class="container py-20 text-center" style="position:relative;z-index:1;">
-    <div style="margin-bottom: 2rem;">
-      <span class="badge badge-accent">🚀 Smart Event Management Portal</span>
-    </div>
-    <h1 style="font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; margin-bottom: 2rem; line-height: 1.1;">
-      One Platform. <br>
-      <span class="text-gradient">Every Event.</span> <br>
-      Total Control.
-    </h1>
-    <p class="text-muted" style="font-size: 1.25rem; max-width: 600px; margin: 0 auto 3rem;">
-      Register for events, build your team, and track live scores — everything your college fest needs, in one place.
-    </p>
+    function useAuth() { return useContext(AuthCtx); }
+    function useTheme() { return useContext(ThemeCtx); }
 
-    <div class="flex justify-center gap-6" style="flex-wrap:wrap;">
-      <div class="pulse-beam-wrap">
-        <a href="auth.html" class="btn" style="padding: 1rem 2.25rem; font-size: 1.05rem;">
-          Start Managing Events
-          <i data-lucide="chevron-right" style="width: 18px; height: 18px;"></i>
-        </a>
-      </div>
-      <div class="pulse-beam-wrap">
-        <a href="events.html" class="btn btn-variant" style="padding: 1rem 2.25rem; font-size: 1.05rem;">
-          Browse Events
-        </a>
-      </div>
-    </div>
+    /* ═══════ AUTH PROVIDER ═══════ */
+    function AuthProvider({ children }) {
+      const [user, setUser] = useState(null);
+      const [profile, setProfile] = useState(null);
+      const [loading, setLoading] = useState(true);
 
-    <div class="flex justify-center gap-8 mt-16 text-sm text-muted" style="flex-wrap:wrap;">
-      <div class="flex items-center gap-2">
-        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--foreground);" class="animate-pulse">
-        </div>
-        Real-time sync
-      </div>
-      <div class="flex items-center gap-2">
-        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--muted-foreground);"
-          class="animate-pulse"></div>
-        Role-based access
-      </div>
-      <div class="flex items-center gap-2">
-        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--foreground);" class="animate-pulse">
-        </div>
-        Cross-platform
-      </div>
-    </div>
-  </header>
+      useEffect(() => {
+        return auth.onAuthStateChanged(async (u) => {
+          setUser(u);
+          if (u) {
+            const doc = await db.collection('users').doc(u.uid).get();
+            setProfile(doc.exists ? doc.data() : { email: u.email, name: u.displayName || 'User', role: 'user' });
+          } else { setProfile(null); }
+          setLoading(false);
+        });
+      }, []);
 
-  <!-- Features — Glow Cards -->
-  <section class="container py-20" style="position:relative;z-index:1;">
-    <div class="text-center" style="margin-bottom: 4rem;">
-      <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Everything You Need</h2>
-      <p class="text-muted">No spreadsheets. No manual tracking. Eventify handles registration, scoring, and
-        notifications automatically.</p>
-    </div>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-      <div class="card glow-card">
-        <div
-          style="width:48px;height:48px;border-radius:12px;background:var(--foreground);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
-          <i data-lucide="users" style="color:var(--background);"></i>
-        </div>
-        <h3 style="margin-bottom:0.5rem;">Team Management</h3>
-        <p class="text-sm text-muted">Create and join teams with unique invite codes.</p>
-      </div>
-      <div class="card glow-card">
-        <div
-          style="width:48px;height:48px;border-radius:12px;background:var(--foreground);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
-          <i data-lucide="trophy" style="color:var(--background);"></i>
-        </div>
-        <h3 style="margin-bottom:0.5rem;">Live Leaderboards</h3>
-        <p class="text-sm text-muted">Real-time score updates across all devices.</p>
-      </div>
-      <div class="card glow-card">
-        <div
-          style="width:48px;height:48px;border-radius:12px;background:var(--foreground);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
-          <i data-lucide="calendar" style="color:var(--background);"></i>
-        </div>
-        <h3 style="margin-bottom:0.5rem;">Event Scheduling</h3>
-        <p class="text-sm text-muted">Complete timelines and location tracking.</p>
-      </div>
-      <div class="card glow-card">
-        <div
-          style="width:48px;height:48px;border-radius:12px;background:var(--foreground);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
-          <i data-lucide="zap" style="color:var(--background);"></i>
-        </div>
-        <h3 style="margin-bottom:0.5rem;">Instant Notifications</h3>
-        <p class="text-sm text-muted">Push alerts delivered the moment they're posted.</p>
-      </div>
-    </div>
-  </section>
+      const login = async (email, pass) => {
+        const cred = await auth.signInWithEmailAndPassword(email, pass);
+        return cred.user;
+      };
+      const register = async (email, pass, name) => {
+        const cred = await auth.createUserWithEmailAndPassword(email, pass);
+        await cred.user.updateProfile({ displayName: name });
+        await db.collection('users').doc(cred.user.uid).set({ email, name, role: 'user', createdAt: new Date().toISOString() });
+        setProfile({ email, name, role: 'user' });
+        return cred.user;
+      };
+      const logout = () => { auth.signOut(); navigate('home'); };
 
-  <!-- FAQ Accordion -->
-  <section class="container py-20 faq-section">
-    <div class="text-center" style="margin-bottom:3rem;">
-      <h2 style="font-size:2.25rem;margin-bottom:0.75rem;">Frequently Asked Questions</h2>
-      <p class="text-muted">Everything you need to know about Eventify.</p>
-    </div>
-    <div class="faq-grid" id="faq-accordion">
-      <div class="faq-item open">
-        <button class="faq-trigger" onclick="toggleFAQ(this)">
-          <span class="faq-trigger-left">
-            <span class="faq-icon-box" style="background:rgba(59,130,246,0.12);color:rgb(96,165,250);">
-              <i data-lucide="file-text" style="width:20px;height:20px;"></i>
-            </span>Event Registration
-          </span>
-          <i data-lucide="chevron-down" class="faq-chevron"></i>
-        </button>
-        <div class="faq-panel">
-          <div class="faq-sub open">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
-                class="sub-chevron"></i>How to Register</button>
-            <div class="faq-sub-content">Visit the Events page, choose your event, and click Register. You'll receive a
-              confirmation instantly.</div>
-          </div>
-          <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
-                class="sub-chevron"></i>Team Registration</button>
-            <div class="faq-sub-content">Create a team using a unique invite code and share it with teammates to join
-              together.</div>
-          </div>
-        </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-trigger" onclick="toggleFAQ(this)">
-          <span class="faq-trigger-left">
-            <span class="faq-icon-box" style="background:rgba(251,146,60,0.12);color:rgb(251,146,60);">
-              <i data-lucide="folder" style="width:20px;height:20px;"></i>
-            </span>Leaderboards & Scoring
-          </span>
-          <i data-lucide="chevron-down" class="faq-chevron"></i>
-        </button>
-        <div class="faq-panel">
-          <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
-                class="sub-chevron"></i>Live Score Updates</button>
-            <div class="faq-sub-content">Scores sync in real-time across all devices the moment they are updated by
-              organizers.</div>
-          </div>
-          <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
-                class="sub-chevron"></i>Score Disputes</button>
-            <div class="faq-sub-content">Contact your event organizer directly through the Notifications panel for any
-              score corrections.</div>
-          </div>
-        </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-trigger" onclick="toggleFAQ(this)">
-          <span class="faq-trigger-left">
-            <span class="faq-icon-box" style="background:rgba(45,212,191,0.12);color:rgb(45,212,191);">
-              <i data-lucide="handshake" style="width:20px;height:20px;"></i>
-            </span>Team Management
-          </span>
-          <i data-lucide="chevron-down" class="faq-chevron"></i>
-        </button>
-        <div class="faq-panel">
-          <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
-                class="sub-chevron"></i>Creating a Team</button>
-            <div class="faq-sub-content">Go to Team Management, click 'Create Team', set a name, and share your unique
-              invite code.</div>
-          </div>
-          <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
-                class="sub-chevron"></i>Roles & Access</button>
-            <div class="faq-sub-content">Team leads have admin access. Members can view schedules and scores based on
-              role-based permissions.</div>
-          </div>
-        </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-trigger" onclick="toggleFAQ(this)">
-          <span class="faq-trigger-left">
-            <span class="faq-icon-box" style="background:rgba(239,68,68,0.12);color:rgb(252,165,165);">
-              <i data-lucide="users" style="width:20px;height:20px;"></i>
-            </span>Support & Contact
-          </span>
-          <i data-lucide="chevron-down" class="faq-chevron"></i>
-        </button>
-        <div class="faq-panel">
-          <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
-                class="sub-chevron"></i>Get Help</button>
-            <div class="faq-sub-content">Use the Notifications panel for instant alerts or contact your college fest
-              organizer directly.</div>
-          </div>
-          <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
-                class="sub-chevron"></i>Platform Issues</button>
-            <div class="faq-sub-content">For technical issues with Eventify, reach out via the support link in the
-              footer of the site.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+      return <AuthCtx.Provider value={{ user, profile, loading, login, register, logout }}>{children}</AuthCtx.Provider>;
+    }
 
-  <!-- Footer -->
-  <footer
-    style="border-top:1px solid var(--border);margin-top:4rem;position:relative;z-index:1;background:var(--background);">
-    <div class="container py-8 footer-inner"
-      style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
-      <div>
-        <div class="flex items-center gap-2" style="margin-bottom:0.25rem;">
-          <i data-lucide="sparkles" style="width:16px;height:16px;"></i>
-          <span class="font-bold" style="font-size:1.1rem;">Eventify</span>
-        </div>
-        <p class="text-muted" style="font-size:0.85rem;">One Platform. Every Event. Total Control.</p>
-      </div>
-      <div class="flex gap-6 text-sm">
-        <a href="events.html" style="color:var(--muted-foreground);text-decoration:none;transition:color 0.2s;"
-          onmouseover="this.style.color='var(--foreground)'"
-          onmouseout="this.style.color='var(--muted-foreground)'">Events</a>
-        <a href="auth.html" style="color:var(--muted-foreground);text-decoration:none;transition:color 0.2s;"
-          onmouseover="this.style.color='var(--foreground)'"
-          onmouseout="this.style.color='var(--muted-foreground)'">Sign In</a>
-        <a href="admin.html" style="color:var(--muted-foreground);text-decoration:none;transition:color 0.2s;"
-          onmouseover="this.style.color='var(--foreground)'"
-          onmouseout="this.style.color='var(--muted-foreground)'">Admin</a>
-      </div>
-      <p style="color:var(--muted-foreground);font-size:0.75rem;">&copy;
-        <script>document.write(new Date().getFullYear())</script> Eventify. All rights reserved.
-      </p>
-    </div>
-  </footer>
+    /* ═══════ THEME PROVIDER ═══════ */
+    function ThemeProvider({ children }) {
+      const [dark, setDark] = useState(() => localStorage.getItem('theme') !== 'light');
+      useEffect(() => {
+        document.body.className = dark ? 'dark' : 'light';
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+      }, [dark]);
+      return <ThemeCtx.Provider value={{ dark, toggle: () => setDark(d => !d) }}>{children}</ThemeCtx.Provider>;
+    }
 
-  <script src="js/app.js"></script>
+    /* ═══════ ROUTER ═══════ */
+    function navigate(page) { window.location.hash = '#' + page; }
+    function useRoute() {
+      const [route, setRoute] = useState(window.location.hash.slice(1) || 'home');
+      useEffect(() => {
+        const handler = () => setRoute(window.location.hash.slice(1) || 'home');
+        window.addEventListener('hashchange', handler);
+        return () => window.removeEventListener('hashchange', handler);
+      }, []);
+      return route;
+    }
+
+    /* ═══════ TOAST ═══════ */
+    let toastTimer;
+    function Toast({ msg, type, onClose }) {
+      if (!msg) return null;
+      const bg = type === 'error' ? 'bg-red-600' : 'bg-white text-black';
+      return (
+        <div className={`fixed bottom-6 right-6 z-[9999] px-5 py-3 rounded-xl font-semibold text-sm flex items-center gap-2 shadow-2xl toast-enter ${bg}`}>
+          {msg}
+        </div>
+      );
+    }
+
+    /* ═══════ SHARED — NAVBAR ═══════ */
+    function Navbar() {
+      const { user, profile, logout } = useAuth();
+      const { dark, toggle } = useTheme();
+      const route = useRoute();
+      const linkCls = (r) => `px-3 py-2 rounded-lg text-sm font-medium transition-all hover:bg-white/10 ${route === r ? 'bg-white/10' : ''}`;
+
+      return (
+        <nav className="sticky top-0 z-50 glass border-b border-white/10">
+          <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="#home" className="flex items-center gap-2 no-underline">
+              <div className="w-8 h-8 rounded-lg bg-current flex items-center justify-center">
+                <i data-lucide="sparkles" className="w-[18px] h-[18px]" style={{ color: dark ? '#000' : '#fff' }}></i>
+              </div>
+              <span className="text-grad font-bold text-xl">Eventify</span>
+            </a>
+            <div className="flex items-center gap-2">
+              <a href="#events" className={linkCls('events')}>Events</a>
+              {user ? (
+                <>
+                  {profile?.role === 'admin' && <a href="#admin" className={linkCls('admin')}>Admin</a>}
+                  <a href="#dashboard" className={linkCls('dashboard')}>Dashboard</a>
+                  <button onClick={logout} className="px-3 py-2 rounded-lg text-sm font-medium border border-white/20 hover:bg-white/10 transition-all">Logout</button>
+                </>
+              ) : (
+                <a href="#auth" className="gbtn px-4 py-2 rounded-xl text-sm font-semibold text-white no-underline">Sign In</a>
+              )}
+              <button onClick={toggle} className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-all" title="Toggle theme">
+                <i data-lucide={dark ? 'moon' : 'sun'} className="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        </nav>
+      );
+    }
+
+    /* ═══════ HOME PAGE ═══════ */
+    function HomePage() {
+      const { dark } = useTheme();
+      const features = [
+        { icon: 'users', title: 'Team Management', desc: 'Create and join teams with unique invite codes.' },
+        { icon: 'trophy', title: 'Live Leaderboards', desc: 'Real-time score updates across all devices.' },
+        { icon: 'calendar', title: 'Event Scheduling', desc: 'Complete timelines and location tracking.' },
+        { icon: 'zap', title: 'Instant Notifications', desc: 'Push alerts delivered the moment they\'re posted.' },
+      ];
+      const faqs = [
+        { q: 'How do I register for events?', a: 'Visit the Events page, choose your event, and click Register. You\'ll receive a confirmation instantly.' },
+        { q: 'Can I register as a team?', a: 'Yes! Create a team name during registration and share the invite code with your teammates.' },
+        { q: 'How do live scores work?', a: 'Scores sync in real-time across all devices the moment they are updated by organizers.' },
+        { q: 'Who can access the Admin panel?', a: 'Only users with admin role can access the Admin panel to manage events and scores.' },
+      ];
+      const [openFaq, setOpenFaq] = useState(0);
+
+      return (
+        <div className="relative">
+          <div className="shape w-[450px] h-[450px] bg-white/15 -top-[10%] -left-[5%]"></div>
+          <div className="shape w-[550px] h-[550px] bg-white/8 -bottom-[10%] -right-[5%]" style={{ animationDelay: '-6s' }}></div>
+
+          {/* Hero */}
+          <header className="max-w-6xl mx-auto px-6 py-20 text-center relative z-10 anim-slide">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider border border-white/12 bg-white/5 mb-8">🚀 Smart Event Management Portal</span>
+            <h1 className="text-5xl md:text-7xl font-extrabold leading-tight mb-6">
+              One Platform.<br /><span className="text-grad">Every Event.</span><br />Total Control.
+            </h1>
+            <p className="text-lg text-gray-400 max-w-xl mx-auto mb-10">
+              Register for events, build your team, and track live scores — everything your college fest needs, in one place.
+            </p>
+            <div className="flex justify-center gap-4 flex-wrap">
+              <a href="#auth" className="gbtn px-8 py-3.5 rounded-xl font-semibold text-white no-underline flex items-center gap-2">
+                Start Managing Events <i data-lucide="chevron-right" className="w-4 h-4"></i>
+              </a>
+              <a href="#events" className="gbtn-alt px-8 py-3.5 rounded-xl font-semibold text-white no-underline">Browse Events</a>
+            </div>
+            <div className="flex justify-center gap-8 mt-16 text-sm text-gray-500 flex-wrap">
+              {['Real-time sync', 'Role-based access', 'Cross-platform'].map((t, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-current anim-pulse"></div>{t}
+                </div>
+              ))}
+            </div>
+          </header>
+
+          {/* Features */}
+          <section className="max-w-6xl mx-auto px-6 py-20 relative z-10">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold mb-3">Everything You Need</h2>
+              <p className="text-gray-400">No spreadsheets. No manual tracking. Eventify handles it all automatically.</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {features.map((f, i) => (
+                <div key={i} className="card-glow bg-surface rounded-xl p-8 border border-white/10">
+                  <div className="w-12 h-12 rounded-xl bg-current flex items-center justify-center mb-5">
+                    <i data-lucide={f.icon} className="w-5 h-5" style={{ color: dark ? '#000' : '#fff' }}></i>
+                  </div>
+                  <h3 className="font-bold text-lg mb-2">{f.title}</h3>
+                  <p className="text-sm text-gray-400">{f.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* FAQ */}
+          <section className="max-w-2xl mx-auto px-6 py-20 relative z-10">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl font-bold mb-2">Frequently Asked Questions</h2>
+              <p className="text-gray-400">Everything you need to know about Eventify.</p>
+            </div>
+            <div className="rounded-xl border border-white/10 overflow-hidden">
+              {faqs.map((f, i) => (
+                <div key={i} className="border-b border-white/10 last:border-b-0">
+                  <button onClick={() => setOpenFaq(openFaq === i ? -1 : i)} className="w-full px-5 py-4 flex items-center justify-between text-left font-semibold text-sm bg-surface hover:bg-white/5 transition-colors">
+                    {f.q}
+                    <i data-lucide="chevron-down" className={`w-4 h-4 text-gray-500 transition-transform ${openFaq === i ? 'rotate-180' : ''}`}></i>
+                  </button>
+                  {openFaq === i && <div className="px-5 py-3 text-sm text-gray-400 bg-white/[.02]">{f.a}</div>}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Footer */}
+          <footer className="border-t border-white/10 bg-black/50 relative z-10">
+            <div className="max-w-6xl mx-auto px-6 py-8 flex items-center justify-between flex-wrap gap-4">
+              <div>
+                <div className="flex items-center gap-2 mb-1"><i data-lucide="sparkles" className="w-4 h-4"></i><span className="font-bold">Eventify</span></div>
+                <p className="text-xs text-gray-500">One Platform. Every Event. Total Control.</p>
+              </div>
+              <div className="flex gap-6 text-sm">
+                <a href="#events" className="text-gray-500 hover:text-white transition-colors no-underline">Events</a>
+                <a href="#auth" className="text-gray-500 hover:text-white transition-colors no-underline">Sign In</a>
+                <a href="#admin" className="text-gray-500 hover:text-white transition-colors no-underline">Admin</a>
+              </div>
+              <p className="text-xs text-gray-600">&copy; {new Date().getFullYear()} Eventify. All rights reserved.</p>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    /* ═══════ AUTH PAGE ═══════ */
+    function AuthPage() {
+      const { user, login, register } = useAuth();
+      const [mode, setMode] = useState('login');
+      const [email, setEmail] = useState('');
+      const [pass, setPass] = useState('');
+      const [name, setName] = useState('');
+      const [err, setErr] = useState('');
+      const [busy, setBusy] = useState(false);
+
+      useEffect(() => { if (user) navigate('dashboard'); }, [user]);
+
+      const submit = async (e) => {
+        e.preventDefault(); setErr(''); setBusy(true);
+        try {
+          if (mode === 'login') await login(email, pass);
+          else await register(email, pass, name);
+          navigate('dashboard');
+        } catch (ex) { setErr(ex.message); }
+        setBusy(false);
+      };
+
+      return (
+        <div className="min-h-screen flex items-center justify-center px-4 relative z-10">
+          <div className="shape w-[400px] h-[400px] bg-white/10 -top-20 -left-20"></div>
+          <div className="card-glow bg-surface rounded-2xl border border-white/10 p-8 w-full max-w-md anim-slide">
+            <div className="flex border-b border-white/10 mb-6">
+              {['login', 'register'].map(m => (
+                <button key={m} onClick={() => setMode(m)} className={`flex-1 py-3 text-sm font-semibold capitalize transition-all border-b-2 ${mode === m ? 'border-current' : 'border-transparent text-gray-500'}`}>{m === 'login' ? 'Login' : 'Register'}</button>
+              ))}
+            </div>
+            <h2 className="text-2xl font-bold mb-6">{mode === 'login' ? 'Sign In' : 'Create Account'}</h2>
+            <form onSubmit={submit} className="space-y-4">
+              {mode === 'register' && (
+                <div>
+                  <label className="block text-sm text-gray-400 mb-1">Full Name</label>
+                  <input value={name} onChange={e => setName(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-sm" placeholder="John Doe" />
+                </div>
+              )}
+              <div>
+                <label className="block text-sm text-gray-400 mb-1">Email Address</label>
+                <input type="email" required value={email} onChange={e => setEmail(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-sm" placeholder="name@example.com" />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-400 mb-1">Password</label>
+                <input type="password" required value={pass} onChange={e => setPass(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-sm" placeholder="••••••••" />
+              </div>
+              <button type="submit" disabled={busy} className="gbtn w-full py-3 rounded-xl font-semibold text-white">
+                {busy ? 'Processing...' : mode === 'login' ? 'Sign In' : 'Sign Up'}
+              </button>
+            </form>
+            {err && <p className="text-red-400 text-sm mt-4 text-center">{err}</p>}
+          </div>
+        </div>
+      );
+    }
+
+    /* ═══════ EVENTS PAGE ═══════ */
+    function EventsPage() {
+      const { user } = useAuth();
+      const [events, setEvents] = useState([]);
+      const [loading, setLoading] = useState(true);
+      const [modal, setModal] = useState(null);
+      const [teamName, setTeamName] = useState('');
+      const [regErr, setRegErr] = useState('');
+      const [toast, setToast] = useState('');
+
+      const loadEvents = useCallback(async () => {
+        try {
+          const snap = await db.collection('events').where('is_visible', '==', true).get();
+          setEvents(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+        } catch (e) { console.error(e); }
+        setLoading(false);
+      }, []);
+
+      useEffect(() => { loadEvents(); }, [loadEvents]);
+
+      const handleRegister = (ev) => {
+        if (!user) { navigate('auth'); return; }
+        setModal(ev); setTeamName(''); setRegErr('');
+      };
+
+      const confirmReg = async () => {
+        try {
+          const code = teamName ? Math.random().toString(36).slice(2, 8).toUpperCase() : null;
+          await db.collection('registrations').add({
+            userId: user.uid,
+            userName: user.displayName || 'User',
+            userEmail: user.email,
+            eventId: modal.id,
+            eventTitle: modal.title,
+            teamName: teamName || null,
+            teamCode: code,
+            score: 0,
+            registeredAt: new Date().toISOString()
+          });
+          setToast('Successfully registered!');
+          setModal(null);
+          setTimeout(() => setToast(''), 3000);
+        } catch (e) { setRegErr(e.message); }
+      };
+
+      return (
+        <div className="max-w-6xl mx-auto px-6 py-16 relative z-10">
+          <div className="text-center mb-12 anim-slide">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider border border-white/12 bg-white/5 mb-4">🎉 Upcoming Events</span>
+            <h1 className="text-5xl font-extrabold mb-3">Discover & Register</h1>
+            <p className="text-gray-400">Explore technical, cultural, and gaming events.</p>
+          </div>
+          {loading ? (
+            <div className="text-center py-16 anim-pulse text-gray-400">Loading amazing events...</div>
+          ) : events.length === 0 ? (
+            <div className="text-center py-16 text-gray-500">No events available right now. Check back soon!</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {events.map(ev => (
+                <div key={ev.id} className="card-glow bg-surface rounded-xl border border-white/10 p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="font-bold text-lg">{ev.title}</h3>
+                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-white/8 border border-white/15">{ev.category}</span>
+                  </div>
+                  <p className="text-sm text-gray-400 mb-4">{ev.description}</p>
+                  <div className="space-y-1.5 text-sm text-gray-500 mb-4">
+                    <div className="flex items-center gap-2"><i data-lucide="calendar" className="w-3.5 h-3.5"></i>{ev.date}</div>
+                    <div className="flex items-center gap-2"><i data-lucide="clock" className="w-3.5 h-3.5"></i>{ev.time}</div>
+                    <div className="flex items-center gap-2"><i data-lucide="map-pin" className="w-3.5 h-3.5"></i>{ev.location}</div>
+                    <div className="flex items-center gap-2"><i data-lucide="users" className="w-3.5 h-3.5"></i>{ev.teamSize || 'Solo'}</div>
+                  </div>
+                  <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-green-500/10 text-green-400 border border-green-500/20">{ev.status || 'Open'}</span>
+                    <button onClick={() => handleRegister(ev)} className="gbtn px-4 py-2 rounded-xl text-xs font-semibold text-white">Register Now</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Registration Modal */}
+          {modal && (
+            <div className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center" onClick={() => setModal(null)}>
+              <div className="bg-surface rounded-2xl border border-white/10 p-8 w-full max-w-md" onClick={e => e.stopPropagation()}>
+                <h3 className="font-bold text-lg mb-1">Register for {modal.title}</h3>
+                <p className="text-sm text-gray-400 mb-5">Enter a team name if registering as a group.</p>
+                <input value={teamName} onChange={e => setTeamName(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-sm mb-4" placeholder="Team Name (optional)" />
+                <div className="flex gap-3">
+                  <button onClick={confirmReg} className="gbtn flex-1 py-3 rounded-xl font-semibold text-white text-sm">Confirm</button>
+                  <button onClick={() => setModal(null)} className="px-4 py-3 rounded-xl border border-white/10 text-sm font-medium hover:bg-white/5 transition-colors">Cancel</button>
+                </div>
+                {regErr && <p className="text-red-400 text-sm mt-3 text-center">{regErr}</p>}
+              </div>
+            </div>
+          )}
+          {toast && <Toast msg={toast} type="success" />}
+        </div>
+      );
+    }
+
+    /* ═══════ DASHBOARD PAGE ═══════ */
+    function DashboardPage() {
+      const { user, profile } = useAuth();
+      const [regs, setRegs] = useState([]);
+      const [loading, setLoading] = useState(true);
+
+      useEffect(() => {
+        if (!user) { navigate('auth'); return; }
+        db.collection('registrations').where('userId', '==', user.uid).get().then(snap => {
+          setRegs(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+          setLoading(false);
+        }).catch(() => setLoading(false));
+      }, [user]);
+
+      if (!user) return null;
+      const avg = regs.length ? (regs.reduce((a, r) => a + (r.score || 0), 0) / regs.length).toFixed(1) : 'N/A';
+
+      return (
+        <div className="max-w-6xl mx-auto px-6 py-16 relative z-10 anim-slide">
+          <h1 className="text-4xl font-extrabold mb-1">Welcome back, {profile?.name?.split(' ')[0] || 'User'}</h1>
+          <p className="text-gray-400 mb-10">Manage your event registrations and scores.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Sidebar */}
+            <div className="space-y-6">
+              <div className="bg-surface rounded-xl border border-white/10 p-6">
+                <div className="w-16 h-16 rounded-full bg-current flex items-center justify-center mb-4">
+                  <i data-lucide="user" className="w-8 h-8" style={{ color: 'var(--tw-prose-bg, #000)' }}></i>
+                </div>
+                <h3 className="font-bold text-lg">{profile?.name}</h3>
+                <p className="text-sm text-gray-500">{profile?.email}</p>
+                <span className="inline-block mt-3 px-3 py-1 text-xs font-semibold rounded-full bg-white/5 border border-white/10 uppercase">{profile?.role}</span>
+              </div>
+              <div className="bg-surface rounded-xl border border-white/10 p-6 space-y-3">
+                <h4 className="font-semibold mb-2">Statistics</h4>
+                <div className="flex justify-between text-sm py-2 border-b border-white/10"><span className="text-gray-500">Registered</span><span>{regs.length}</span></div>
+                <div className="flex justify-between text-sm py-2"><span className="text-gray-500">Avg Score</span><span>{avg}</span></div>
+              </div>
+            </div>
+            {/* Main */}
+            <div className="md:col-span-2">
+              <h3 className="font-bold text-lg mb-4">My Registrations</h3>
+              {loading ? <p className="text-gray-500 anim-pulse">Loading your event passes...</p> :
+                regs.length === 0 ? <p className="text-gray-500">No registrations yet. <a href="#events" className="underline">Discover events</a>.</p> :
+                  <div className="space-y-3">
+                    {regs.map(r => (
+                      <div key={r.id} className="bg-surface rounded-xl border border-white/10 p-5 flex items-center justify-between flex-wrap gap-4 card-glow">
+                        <div>
+                          <h4 className="font-semibold">{r.eventTitle}</h4>
+                          <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
+                            <i data-lucide="tag" className="w-3.5 h-3.5"></i>
+                            <span>{r.teamName || 'Solo Entry'}</span>
+                            {r.teamCode && <span className="font-mono font-bold text-current">CODE: {r.teamCode}</span>}
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <span className="text-xs font-semibold px-3 py-1 rounded-full bg-white/8 border border-white/15">Score: {r.score}</span>
+                          <p className="text-xs text-gray-600 mt-1">{new Date(r.registeredAt).toLocaleDateString()}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+              }
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ═══════ ADMIN PAGE ═══════ */
+    function AdminPage() {
+      const { user, profile } = useAuth();
+      const [tab, setTab] = useState('registrations');
+      const [regs, setRegs] = useState([]);
+      const [events, setEvents] = useState([]);
+      const [showModal, setShowModal] = useState(false);
+      const [toast, setToast] = useState({ msg: '', type: '' });
+      const [form, setForm] = useState({ title: '', category: 'Technical', status: 'Open', description: '', date: '', time: '', location: '', teamSize: '', prizePool: '' });
+
+      useEffect(() => {
+        if (!user || profile?.role !== 'admin') { navigate('home'); return; }
+        loadRegs(); loadEvents();
+      }, [user, profile]);
+
+      const loadRegs = async () => {
+        const snap = await db.collection('registrations').get();
+        setRegs(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+      };
+      const loadEvents = async () => {
+        const snap = await db.collection('events').get();
+        setEvents(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+      };
+      const showToast = (msg, type = 'success') => { setToast({ msg, type }); setTimeout(() => setToast({ msg: '', type: '' }), 3000); };
+
+      const updateScore = async (regId, score) => {
+        await db.collection('registrations').doc(regId).update({ score: parseInt(score) });
+        showToast('Score saved!'); loadRegs();
+      };
+      const toggleVis = async (evId, current) => {
+        await db.collection('events').doc(evId).update({ is_visible: !current });
+        showToast('Visibility updated!'); loadEvents();
+      };
+      const deleteEvent = async (evId) => {
+        if (!confirm('Delete this event and all registrations?')) return;
+        await db.collection('events').doc(evId).delete();
+        const regSnap = await db.collection('registrations').where('eventId', '==', evId).get();
+        const batch = db.batch();
+        regSnap.forEach(d => batch.delete(d.ref));
+        await batch.commit();
+        showToast('Event deleted'); loadEvents(); loadRegs();
+      };
+      const createEvent = async (e) => {
+        e.preventDefault();
+        await db.collection('events').add({ ...form, is_visible: true, participants: 0, createdAt: new Date().toISOString() });
+        showToast('Event created!'); setShowModal(false); setForm({ title: '', category: 'Technical', status: 'Open', description: '', date: '', time: '', location: '', teamSize: '', prizePool: '' }); loadEvents();
+      };
+
+      if (!user || profile?.role !== 'admin') return null;
+      const uniqueUsers = new Set(regs.map(r => r.userEmail)).size;
+      const visibleEvs = events.filter(e => e.is_visible).length;
+
+      return (
+        <div className="max-w-6xl mx-auto px-6 py-10 relative z-10 anim-slide">
+          {/* Header */}
+          <div className="flex items-start justify-between flex-wrap gap-4 mb-8">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full bg-current flex items-center justify-center shadow-lg shadow-white/10">
+                <i data-lucide="shield-check" className="w-5 h-5" style={{ color: '#000' }}></i>
+              </div>
+              <div><h1 className="text-2xl font-extrabold">Admin Control Center</h1><p className="text-sm text-gray-500">Full control over events, registrations & scoring</p></div>
+            </div>
+            <span className="text-xs font-semibold px-3 py-1 rounded-full bg-white/8 border border-white/15 uppercase flex items-center gap-1"><i data-lucide="shield" className="w-3 h-3"></i>ADMIN</span>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            {[
+              { icon: 'ticket', color: 'rgb(167,139,250)', bg: 'rgba(147,51,234,.15)', label: 'Total Registrations', val: regs.length },
+              { icon: 'calendar-check', color: 'rgb(249,168,212)', bg: 'rgba(219,39,119,.15)', label: 'Active Events', val: events.length },
+              { icon: 'users', color: 'rgb(165,180,252)', bg: 'rgba(79,70,229,.15)', label: 'Participants', val: uniqueUsers },
+              { icon: 'eye', color: 'rgb(74,222,128)', bg: 'rgba(34,197,94,.12)', label: 'Visible Events', val: visibleEvs },
+            ].map((s, i) => (
+              <div key={i} className="bg-surface rounded-xl border border-white/10 p-5 card-glow">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: s.bg }}>
+                  <i data-lucide={s.icon} className="w-5 h-5" style={{ color: s.color }}></i>
+                </div>
+                <div className="text-2xl font-extrabold">{s.val}</div>
+                <div className="text-xs text-gray-500 uppercase tracking-wider font-medium">{s.label}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Tabs */}
+          <div className="flex gap-1 bg-surface/60 border border-white/10 rounded-xl p-1 mb-8">
+            {['registrations', 'events'].map(t => (
+              <button key={t} onClick={() => { setTab(t); if (t === 'events') loadEvents(); else loadRegs(); }}
+                className={`flex-1 py-2.5 rounded-lg text-sm font-semibold capitalize flex items-center justify-center gap-2 transition-all ${tab === t ? 'bg-current text-black shadow-lg' : 'text-gray-500 hover:bg-white/5'}`}>
+                <i data-lucide={t === 'registrations' ? 'list' : 'calendar'} className="w-4 h-4"></i>
+                {t === 'registrations' ? 'Registrations' : 'Manage Events'}
+              </button>
+            ))}
+          </div>
+
+          {/* Registrations Tab */}
+          {tab === 'registrations' && (
+            <div className="bg-surface rounded-xl border border-white/10 overflow-hidden">
+              <div className="px-6 py-4 border-b border-white/5 flex justify-between items-center">
+                <div><h3 className="font-bold">All Registrations</h3><p className="text-xs text-gray-500">Live participant data from Firestore</p></div>
+                <button onClick={loadRegs} className="px-3 py-1.5 rounded-lg border border-white/10 text-xs font-medium hover:bg-white/5 flex items-center gap-1"><i data-lucide="refresh-cw" className="w-3 h-3"></i>Refresh</button>
+              </div>
+              {regs.length === 0 ? <div className="text-center py-12 text-gray-500">No registrations yet.</div> : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead><tr className="text-xs text-gray-500 uppercase tracking-wider">{['Participant', 'Event', 'Team', 'Code', 'Score', 'Action'].map(h => <th key={h} className="px-4 py-3 text-left font-semibold border-b border-white/5">{h}</th>)}</tr></thead>
+                    <tbody>
+                      {regs.map(r => (
+                        <tr key={r.id} className="border-b border-white/[.03] hover:bg-white/[.03] transition-colors">
+                          <td className="px-4 py-3"><div className="font-semibold">{r.userName}</div><div className="text-xs text-gray-500">{r.userEmail}</div></td>
+                          <td className="px-4 py-3 font-semibold">{r.eventTitle}</td>
+                          <td className="px-4 py-3">{r.teamName ? <span className="px-2 py-0.5 rounded-full text-xs bg-white/8 border border-white/15">{r.teamName}</span> : <span className="text-gray-600 text-xs">Solo</span>}</td>
+                          <td className="px-4 py-3">{r.teamCode ? <code className="text-xs font-mono px-2 py-0.5 rounded bg-purple-500/10 text-purple-300">{r.teamCode}</code> : '—'}</td>
+                          <td className="px-4 py-3"><input type="number" defaultValue={r.score || 0} id={`s-${r.id}`} min="0" className="w-16 px-2 py-1 rounded-lg bg-white/5 border border-white/10 text-center text-sm" /></td>
+                          <td className="px-4 py-3 text-right"><button onClick={() => updateScore(r.id, document.getElementById(`s-${r.id}`).value)} className="gbtn px-3 py-1.5 rounded-lg text-xs font-semibold text-white">Save</button></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Events Tab */}
+          {tab === 'events' && (
+            <div>
+              <div className="flex justify-between items-center mb-4">
+                <div><h3 className="font-bold">Event Library</h3><p className="text-xs text-gray-500">Toggle visibility or delete events</p></div>
+                <button onClick={() => setShowModal(true)} className="gbtn px-4 py-2 rounded-xl text-sm font-semibold text-white flex items-center gap-2"><i data-lucide="plus" className="w-4 h-4"></i>Create Event</button>
+              </div>
+              {events.length === 0 ? <div className="text-center py-12 text-gray-500 bg-surface rounded-xl border border-white/10">No events created yet.</div> : (
+                <div className="space-y-3">
+                  {events.map(ev => (
+                    <div key={ev.id} className={`bg-surface rounded-xl border border-white/10 p-5 flex items-center justify-between flex-wrap gap-4 card-glow ${!ev.is_visible ? 'opacity-50' : ''}`}>
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-bold">{ev.title}</span>
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${ev.is_visible ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'}`}>{ev.is_visible ? 'VISIBLE' : 'HIDDEN'}</span>
+                        </div>
+                        <div className="flex flex-wrap gap-2 text-xs text-gray-500">
+                          <span className="px-2 py-0.5 rounded-full bg-white/5 border border-white/5">{ev.category}</span>
+                          <span className="px-2 py-0.5 rounded-full bg-white/5 border border-white/5">{ev.date}</span>
+                          <span className="px-2 py-0.5 rounded-full bg-white/5 border border-white/5">{ev.location || 'TBA'}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button onClick={() => toggleVis(ev.id, ev.is_visible)} className="px-3 py-1.5 rounded-lg border border-white/10 text-xs font-medium hover:bg-white/5">{ev.is_visible ? 'Hide' : 'Show'}</button>
+                        <button onClick={() => deleteEvent(ev.id)} className="px-3 py-1.5 rounded-lg bg-red-600/20 text-red-400 border border-red-500/20 text-xs font-semibold hover:bg-red-600/30">Delete</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Create Event Modal */}
+          {showModal && (
+            <div className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center" onClick={() => setShowModal(false)}>
+              <div className="bg-surface rounded-2xl border border-white/10 p-8 w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="font-bold text-lg">Create New Event</h3>
+                  <button onClick={() => setShowModal(false)} className="p-1 hover:bg-white/10 rounded-lg"><i data-lucide="x" className="w-5 h-5"></i></button>
+                </div>
+                <form onSubmit={createEvent} className="space-y-4">
+                  <div><label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Title *</label><input required value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm" placeholder="HackFest 2026" /></div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div><label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Category</label><select value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm"><option>Technical</option><option>Cultural</option><option>Gaming</option><option>Concert</option></select></div>
+                    <div><label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Status</label><select value={form.status} onChange={e => setForm({ ...form, status: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm"><option>Open</option><option>Filling Fast</option><option>Closed</option></select></div>
+                  </div>
+                  <div><label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Description</label><textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} rows="2" className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm" placeholder="Brief description..."></textarea></div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div><label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Date *</label><input required value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm" placeholder="March 25, 2026" /></div>
+                    <div><label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Time *</label><input required value={form.time} onChange={e => setForm({ ...form, time: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm" placeholder="10:00 AM" /></div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div><label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Location *</label><input required value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm" placeholder="Auditorium A" /></div>
+                    <div><label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Team Size</label><input value={form.teamSize} onChange={e => setForm({ ...form, teamSize: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm" placeholder="3-5 members" /></div>
+                  </div>
+                  <div><label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Prize Pool</label><input value={form.prizePool} onChange={e => setForm({ ...form, prizePool: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm" placeholder="₹50,000" /></div>
+                  <div className="flex gap-3 pt-2">
+                    <button type="submit" className="gbtn flex-1 py-3 rounded-xl font-semibold text-white">Save Event</button>
+                    <button type="button" onClick={() => setShowModal(false)} className="px-4 py-3 rounded-xl border border-white/10 text-sm font-medium hover:bg-white/5">Cancel</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+          {toast.msg && <Toast msg={toast.msg} type={toast.type} />}
+        </div>
+      );
+    }
+
+    /* ═══════ APP ═══════ */
+    function App() {
+      const route = useRoute();
+
+      useEffect(() => {
+        setTimeout(() => {
+          if (window.lucide) lucide.createIcons();
+          if (window.initGlowCards) window.initGlowCards();
+          if (window.initPulseBeams) window.initPulseBeams();
+        }, 200);
+      });
+
+      const Page = () => {
+        switch (route) {
+          case 'auth': return <AuthPage />;
+          case 'events': return <EventsPage />;
+          case 'dashboard': return <DashboardPage />;
+          case 'admin': return <AdminPage />;
+          default: return <HomePage />;
+        }
+      };
+
+      return (
+        <ThemeProvider>
+          <AuthProvider>
+            <Navbar />
+            <Page />
+          </AuthProvider>
+        </ThemeProvider>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+  <!-- Original Eventify visual effects -->
   <script src="js/shader-bg.js"></script>
   <script src="js/glow-cards.js"></script>
   <script src="js/pulse-beams.js"></script>
-  <script src="js/theme-toggle.js"></script>
-  <script>
-    function toggleFAQ(btn) {
-      const item = btn.parentElement;
-      const wasOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-      if (!wasOpen) item.classList.add('open');
-    }
-    function toggleSubFAQ(btn) { btn.parentElement.classList.toggle('open'); }
-  </script>
-  <!-- Firebase SDK -->
-  <script type="module" src="js/firebase-config.js"></script>
 </body>
 
 </html>
