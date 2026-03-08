@@ -185,204 +185,546 @@
       </div>
     </div>
   </nav>
+  <div id="app-views">
+    <section id="view-home" class="page-view active">
+      <!-- Hero -->
+      <header class="container py-20 text-center" style="position:relative;z-index:1;">
+        <div style="margin-bottom: 2rem;">
+          <span class="badge badge-accent">🚀 Smart Event Management Portal</span>
+        </div>
+        <h1 style="font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; margin-bottom: 2rem; line-height: 1.1;">
+          One Platform. <br>
+          <span class="text-gradient">Every Event.</span> <br>
+          Total Control.
+        </h1>
+        <p class="text-muted" style="font-size: 1.25rem; max-width: 600px; margin: 0 auto 3rem;">
+          Register for events, build your team, and track live scores — everything your college fest needs, in one
+          place.
+        </p>
 
-  <!-- Hero -->
-  <header class="container py-20 text-center" style="position:relative;z-index:1;">
-    <div style="margin-bottom: 2rem;">
-      <span class="badge badge-accent">🚀 Smart Event Management Portal</span>
-    </div>
-    <h1 style="font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; margin-bottom: 2rem; line-height: 1.1;">
-      One Platform. <br>
-      <span class="text-gradient">Every Event.</span> <br>
-      Total Control.
-    </h1>
-    <p class="text-muted" style="font-size: 1.25rem; max-width: 600px; margin: 0 auto 3rem;">
-      Register for events, build your team, and track live scores — everything your college fest needs, in one place.
-    </p>
+        <div class="flex justify-center gap-6" style="flex-wrap:wrap;">
+          <div class="pulse-beam-wrap">
+            <a href="auth.html" class="btn" style="padding: 1rem 2.25rem; font-size: 1.05rem;">
+              Start Managing Events
+              <i data-lucide="chevron-right" style="width: 18px; height: 18px;"></i>
+            </a>
+          </div>
+          <div class="pulse-beam-wrap">
+            <a href="events.html" class="btn btn-variant" style="padding: 1rem 2.25rem; font-size: 1.05rem;">
+              Browse Events
+            </a>
+          </div>
+        </div>
 
-    <div class="flex justify-center gap-6" style="flex-wrap:wrap;">
-      <div class="pulse-beam-wrap">
-        <a href="auth.html" class="btn" style="padding: 1rem 2.25rem; font-size: 1.05rem;">
-          Start Managing Events
-          <i data-lucide="chevron-right" style="width: 18px; height: 18px;"></i>
-        </a>
-      </div>
-      <div class="pulse-beam-wrap">
-        <a href="events.html" class="btn btn-variant" style="padding: 1rem 2.25rem; font-size: 1.05rem;">
-          Browse Events
-        </a>
-      </div>
-    </div>
+        <div class="flex justify-center gap-8 mt-16 text-sm text-muted" style="flex-wrap:wrap;">
+          <div class="flex items-center gap-2">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--foreground);"
+              class="animate-pulse">
+            </div>
+            Real-time sync
+          </div>
+          <div class="flex items-center gap-2">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--muted-foreground);"
+              class="animate-pulse"></div>
+            Role-based access
+          </div>
+          <div class="flex items-center gap-2">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--foreground);"
+              class="animate-pulse">
+            </div>
+            Cross-platform
+          </div>
+        </div>
+      </header>
 
-    <div class="flex justify-center gap-8 mt-16 text-sm text-muted" style="flex-wrap:wrap;">
-      <div class="flex items-center gap-2">
-        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--foreground);" class="animate-pulse">
+      <!-- Features — Glow Cards -->
+      <section class="container py-20" style="position:relative;z-index:1;">
+        <div class="text-center" style="margin-bottom: 4rem;">
+          <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Everything You Need</h2>
+          <p class="text-muted">No spreadsheets. No manual tracking. Eventify handles registration, scoring, and
+            notifications automatically.</p>
         </div>
-        Real-time sync
-      </div>
-      <div class="flex items-center gap-2">
-        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--muted-foreground);"
-          class="animate-pulse"></div>
-        Role-based access
-      </div>
-      <div class="flex items-center gap-2">
-        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--foreground);" class="animate-pulse">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+          <div class="card glow-card">
+            <div
+              style="width:48px;height:48px;border-radius:12px;background:var(--foreground);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
+              <i data-lucide="users" style="color:var(--background);"></i>
+            </div>
+            <h3 style="margin-bottom:0.5rem;">Team Management</h3>
+            <p class="text-sm text-muted">Create and join teams with unique invite codes.</p>
+          </div>
+          <div class="card glow-card">
+            <div
+              style="width:48px;height:48px;border-radius:12px;background:var(--foreground);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
+              <i data-lucide="trophy" style="color:var(--background);"></i>
+            </div>
+            <h3 style="margin-bottom:0.5rem;">Live Leaderboards</h3>
+            <p class="text-sm text-muted">Real-time score updates across all devices.</p>
+          </div>
+          <div class="card glow-card">
+            <div
+              style="width:48px;height:48px;border-radius:12px;background:var(--foreground);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
+              <i data-lucide="calendar" style="color:var(--background);"></i>
+            </div>
+            <h3 style="margin-bottom:0.5rem;">Event Scheduling</h3>
+            <p class="text-sm text-muted">Complete timelines and location tracking.</p>
+          </div>
+          <div class="card glow-card">
+            <div
+              style="width:48px;height:48px;border-radius:12px;background:var(--foreground);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
+              <i data-lucide="zap" style="color:var(--background);"></i>
+            </div>
+            <h3 style="margin-bottom:0.5rem;">Instant Notifications</h3>
+            <p class="text-sm text-muted">Push alerts delivered the moment they're posted.</p>
+          </div>
         </div>
-        Cross-platform
-      </div>
-    </div>
-  </header>
+      </section>
 
-  <!-- Features — Glow Cards -->
-  <section class="container py-20" style="position:relative;z-index:1;">
-    <div class="text-center" style="margin-bottom: 4rem;">
-      <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Everything You Need</h2>
-      <p class="text-muted">No spreadsheets. No manual tracking. Eventify handles registration, scoring, and
-        notifications automatically.</p>
-    </div>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-      <div class="card glow-card">
-        <div
-          style="width:48px;height:48px;border-radius:12px;background:var(--foreground);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
-          <i data-lucide="users" style="color:var(--background);"></i>
+      <!-- FAQ Accordion -->
+      <section class="container py-20 faq-section">
+        <div class="text-center" style="margin-bottom:3rem;">
+          <h2 style="font-size:2.25rem;margin-bottom:0.75rem;">Frequently Asked Questions</h2>
+          <p class="text-muted">Everything you need to know about Eventify.</p>
         </div>
-        <h3 style="margin-bottom:0.5rem;">Team Management</h3>
-        <p class="text-sm text-muted">Create and join teams with unique invite codes.</p>
-      </div>
-      <div class="card glow-card">
-        <div
-          style="width:48px;height:48px;border-radius:12px;background:var(--foreground);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
-          <i data-lucide="trophy" style="color:var(--background);"></i>
+        <div class="faq-grid" id="faq-accordion">
+          <div class="faq-item open">
+            <button class="faq-trigger" onclick="toggleFAQ(this)">
+              <span class="faq-trigger-left">
+                <span class="faq-icon-box" style="background:rgba(59,130,246,0.12);color:rgb(96,165,250);">
+                  <i data-lucide="file-text" style="width:20px;height:20px;"></i>
+                </span>Event Registration
+              </span>
+              <i data-lucide="chevron-down" class="faq-chevron"></i>
+            </button>
+            <div class="faq-panel">
+              <div class="faq-sub open">
+                <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
+                    class="sub-chevron"></i>How to Register</button>
+                <div class="faq-sub-content">Visit the Events page, choose your event, and click Register. You'll
+                  receive a
+                  confirmation instantly.</div>
+              </div>
+              <div class="faq-sub">
+                <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
+                    class="sub-chevron"></i>Team Registration</button>
+                <div class="faq-sub-content">Create a team using a unique invite code and share it with teammates to
+                  join
+                  together.</div>
+              </div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-trigger" onclick="toggleFAQ(this)">
+              <span class="faq-trigger-left">
+                <span class="faq-icon-box" style="background:rgba(251,146,60,0.12);color:rgb(251,146,60);">
+                  <i data-lucide="folder" style="width:20px;height:20px;"></i>
+                </span>Leaderboards & Scoring
+              </span>
+              <i data-lucide="chevron-down" class="faq-chevron"></i>
+            </button>
+            <div class="faq-panel">
+              <div class="faq-sub">
+                <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
+                    class="sub-chevron"></i>Live Score Updates</button>
+                <div class="faq-sub-content">Scores sync in real-time across all devices the moment they are updated by
+                  organizers.</div>
+              </div>
+              <div class="faq-sub">
+                <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
+                    class="sub-chevron"></i>Score Disputes</button>
+                <div class="faq-sub-content">Contact your event organizer directly through the Notifications panel for
+                  any
+                  score corrections.</div>
+              </div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-trigger" onclick="toggleFAQ(this)">
+              <span class="faq-trigger-left">
+                <span class="faq-icon-box" style="background:rgba(45,212,191,0.12);color:rgb(45,212,191);">
+                  <i data-lucide="handshake" style="width:20px;height:20px;"></i>
+                </span>Team Management
+              </span>
+              <i data-lucide="chevron-down" class="faq-chevron"></i>
+            </button>
+            <div class="faq-panel">
+              <div class="faq-sub">
+                <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
+                    class="sub-chevron"></i>Creating a Team</button>
+                <div class="faq-sub-content">Go to Team Management, click 'Create Team', set a name, and share your
+                  unique
+                  invite code.</div>
+              </div>
+              <div class="faq-sub">
+                <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
+                    class="sub-chevron"></i>Roles & Access</button>
+                <div class="faq-sub-content">Team leads have admin access. Members can view schedules and scores based
+                  on
+                  role-based permissions.</div>
+              </div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-trigger" onclick="toggleFAQ(this)">
+              <span class="faq-trigger-left">
+                <span class="faq-icon-box" style="background:rgba(239,68,68,0.12);color:rgb(252,165,165);">
+                  <i data-lucide="users" style="width:20px;height:20px;"></i>
+                </span>Support & Contact
+              </span>
+              <i data-lucide="chevron-down" class="faq-chevron"></i>
+            </button>
+            <div class="faq-panel">
+              <div class="faq-sub">
+                <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
+                    class="sub-chevron"></i>Get Help</button>
+                <div class="faq-sub-content">Use the Notifications panel for instant alerts or contact your college fest
+                  organizer directly.</div>
+              </div>
+              <div class="faq-sub">
+                <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
+                    class="sub-chevron"></i>Platform Issues</button>
+                <div class="faq-sub-content">For technical issues with Eventify, reach out via the support link in the
+                  footer of the site.</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <h3 style="margin-bottom:0.5rem;">Live Leaderboards</h3>
-        <p class="text-sm text-muted">Real-time score updates across all devices.</p>
-      </div>
-      <div class="card glow-card">
-        <div
-          style="width:48px;height:48px;border-radius:12px;background:var(--foreground);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
-          <i data-lucide="calendar" style="color:var(--background);"></i>
-        </div>
-        <h3 style="margin-bottom:0.5rem;">Event Scheduling</h3>
-        <p class="text-sm text-muted">Complete timelines and location tracking.</p>
-      </div>
-      <div class="card glow-card">
-        <div
-          style="width:48px;height:48px;border-radius:12px;background:var(--foreground);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
-          <i data-lucide="zap" style="color:var(--background);"></i>
-        </div>
-        <h3 style="margin-bottom:0.5rem;">Instant Notifications</h3>
-        <p class="text-sm text-muted">Push alerts delivered the moment they're posted.</p>
-      </div>
-    </div>
-  </section>
+      </section>
 
-  <!-- FAQ Accordion -->
-  <section class="container py-20 faq-section">
-    <div class="text-center" style="margin-bottom:3rem;">
-      <h2 style="font-size:2.25rem;margin-bottom:0.75rem;">Frequently Asked Questions</h2>
-      <p class="text-muted">Everything you need to know about Eventify.</p>
-    </div>
-    <div class="faq-grid" id="faq-accordion">
-      <div class="faq-item open">
-        <button class="faq-trigger" onclick="toggleFAQ(this)">
-          <span class="faq-trigger-left">
-            <span class="faq-icon-box" style="background:rgba(59,130,246,0.12);color:rgb(96,165,250);">
-              <i data-lucide="file-text" style="width:20px;height:20px;"></i>
-            </span>Event Registration
-          </span>
-          <i data-lucide="chevron-down" class="faq-chevron"></i>
-        </button>
-        <div class="faq-panel">
-          <div class="faq-sub open">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
-                class="sub-chevron"></i>How to Register</button>
-            <div class="faq-sub-content">Visit the Events page, choose your event, and click Register. You'll receive a
-              confirmation instantly.</div>
+      <!-- Footer -->
+    </section>
+    <section id="view-auth" class="page-view">
+      <div class="container" style="position:relative;z-index:1;">
+        <div class="card auth-card">
+          <div class="flex gap-4 mb-8" style="border-bottom:1px solid var(--border);">
+            <div id="login-tab" class="tab-btn active" onclick="Auth.setMode('login')">Login</div>
+            <div id="register-tab" class="tab-btn" onclick="Auth.setMode('register')">Register</div>
           </div>
-          <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
-                class="sub-chevron"></i>Team Registration</button>
-            <div class="faq-sub-content">Create a team using a unique invite code and share it with teammates to join
-              together.</div>
-          </div>
-        </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-trigger" onclick="toggleFAQ(this)">
-          <span class="faq-trigger-left">
-            <span class="faq-icon-box" style="background:rgba(251,146,60,0.12);color:rgb(251,146,60);">
-              <i data-lucide="folder" style="width:20px;height:20px;"></i>
-            </span>Leaderboards & Scoring
-          </span>
-          <i data-lucide="chevron-down" class="faq-chevron"></i>
-        </button>
-        <div class="faq-panel">
-          <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
-                class="sub-chevron"></i>Live Score Updates</button>
-            <div class="faq-sub-content">Scores sync in real-time across all devices the moment they are updated by
-              organizers.</div>
-          </div>
-          <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
-                class="sub-chevron"></i>Score Disputes</button>
-            <div class="faq-sub-content">Contact your event organizer directly through the Notifications panel for any
-              score corrections.</div>
+          <h2 id="auth-title" style="margin-bottom:1.5rem;">Sign In</h2>
+          <form id="auth-form">
+            <div id="name-group" class="form-group" style="display:none;">
+              <label>Full Name</label>
+              <input type="text" id="name" class="form-control" placeholder="John Doe">
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" id="email" class="form-control" placeholder="name@example.com" required>
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <div class="pulse-beam-wrap">
+              <button type="submit" id="submit-btn" class="btn" style="width:100%;padding:0.85rem;">
+                Continue
+              </button>
+            </div>
+          </form>
+          <div id="error-msg"
+            style="color:var(--destructive);font-size:0.875rem;margin-top:1rem;text-align:center;display:none;">
           </div>
         </div>
       </div>
-      <div class="faq-item">
-        <button class="faq-trigger" onclick="toggleFAQ(this)">
-          <span class="faq-trigger-left">
-            <span class="faq-icon-box" style="background:rgba(45,212,191,0.12);color:rgb(45,212,191);">
-              <i data-lucide="handshake" style="width:20px;height:20px;"></i>
-            </span>Team Management
-          </span>
-          <i data-lucide="chevron-down" class="faq-chevron"></i>
-        </button>
-        <div class="faq-panel">
-          <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
-                class="sub-chevron"></i>Creating a Team</button>
-            <div class="faq-sub-content">Go to Team Management, click 'Create Team', set a name, and share your unique
-              invite code.</div>
-          </div>
-          <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
-                class="sub-chevron"></i>Roles & Access</button>
-            <div class="faq-sub-content">Team leads have admin access. Members can view schedules and scores based on
-              role-based permissions.</div>
+    </section>
+    <section id="view-events" class="page-view">
+      <div class="container py-16" style="position:relative;z-index:1;">
+        <div class="text-center">
+          <div class="badge badge-accent" style="margin-bottom:1rem;">🎉 Upcoming Events Dashboard</div>
+          <h1 style="font-size:3rem;margin-bottom:1rem;">Discover & Register</h1>
+          <p class="text-muted">Explore a wide range of technical, cultural, and gaming events.</p>
+        </div>
+        <div id="events-list" class="events-grid">
+          <div id="loading" class="text-center" style="grid-column:1/-1;padding:4rem;">
+            <div class="animate-pulse">Loading amazing events...</div>
           </div>
         </div>
       </div>
-      <div class="faq-item">
-        <button class="faq-trigger" onclick="toggleFAQ(this)">
-          <span class="faq-trigger-left">
-            <span class="faq-icon-box" style="background:rgba(239,68,68,0.12);color:rgb(252,165,165);">
-              <i data-lucide="users" style="width:20px;height:20px;"></i>
-            </span>Support & Contact
-          </span>
-          <i data-lucide="chevron-down" class="faq-chevron"></i>
-        </button>
-        <div class="faq-panel">
-          <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
-                class="sub-chevron"></i>Get Help</button>
-            <div class="faq-sub-content">Use the Notifications panel for instant alerts or contact your college fest
-              organizer directly.</div>
-          </div>
-          <div class="faq-sub">
-            <button class="faq-sub-trigger" onclick="toggleSubFAQ(this)"><i data-lucide="chevron-down"
-                class="sub-chevron"></i>Platform Issues</button>
-            <div class="faq-sub-content">For technical issues with Eventify, reach out via the support link in the
-              footer of the site.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Footer -->
+      <!-- Registration Modal -->
+      <div id="reg-modal" class="registration-overlay" onclick="EventsPage.closeModal(event)">
+        <div class="card" style="width:100%;max-width:400px;padding:2rem;" onclick="event.stopPropagation()">
+          <h3 id="modal-title" style="margin-bottom:1rem;">Register for Event</h3>
+          <p class="text-sm text-muted" style="margin-bottom:1.5rem;">Please enter a team name if you are registering
+            as a group.</p>
+          <div class="form-group" style="margin-bottom:1.5rem;">
+            <label style="display:block;margin-bottom:0.5rem;font-size:0.875rem;color:var(--muted-foreground);">Team
+              Name (Optional)</label>
+            <input type="text" id="team-name" class="form-control" placeholder="The Avengers">
+          </div>
+          <div class="flex gap-2">
+            <button class="btn" style="flex:1;" onclick="EventsPage.confirmRegistration()">
+              <i data-lucide="check" style="width:15px;height:15px;"></i> Confirm Registration
+            </button>
+            <button class="btn btn-outline" onclick="EventsPage.closeModal()">Cancel</button>
+          </div>
+          <div id="reg-error"
+            style="color:var(--destructive);font-size:0.875rem;margin-top:1rem;text-align:center;display:none;">
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="view-dashboard" class="page-view">
+      <div class="container py-16" style="position:relative;z-index:1;">
+        <header style="margin-bottom:3rem;">
+          <h1 style="font-size:2.5rem;margin-bottom:0.5rem;" id="greeting">Welcome back, Participant</h1>
+          <p class="text-muted">Manage your event registrations and live scores here.</p>
+        </header>
+
+        <div class="dashboard-grid">
+          <aside class="flex flex-col gap-6">
+            <div class="card">
+              <div
+                style="width:64px;height:64px;border-radius:50%;background:var(--foreground);display:flex;align-items:center;justify-content:center;margin-bottom:1rem;">
+                <i data-lucide="user" style="color:var(--background);width:32px;height:32px;"></i>
+              </div>
+              <h3 id="profile-name">Full Name</h3>
+              <p class="text-sm text-muted" id="profile-email">email@example.com</p>
+              <div class="badge badge-accent mt-4" style="display:inline-block;">Gold Member</div>
+            </div>
+            <div class="card" style="border-color:#333;">
+              <h4 style="margin-bottom:0.5rem;">Event Statistics</h4>
+              <div class="flex justify-between text-sm py-2" style="border-bottom:1px solid var(--border);">
+                <span class="text-muted">Registered</span>
+                <span id="stat-registered">0</span>
+              </div>
+              <div class="flex justify-between text-sm py-2">
+                <span class="text-muted">Average Score</span>
+                <span id="stat-score">N/A</span>
+              </div>
+            </div>
+          </aside>
+
+          <main>
+            <h3 style="margin-bottom:1.5rem;">My Registrations</h3>
+            <div id="registrations-list">
+              <div class="animate-pulse text-muted">Loading your event passes...</div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </section>
+    <section id="view-admin" class="page-view">
+      <div class="container admin-container">
+
+        <!-- Header -->
+        <div class="admin-header">
+          <div class="admin-header-meta">
+            <div class="admin-avatar">
+              <i data-lucide="shield-check" style="color:white; width:22px; height:22px;"></i>
+            </div>
+            <div>
+              <h1 style="font-size: 1.75rem; font-weight: 800; line-height: 1.2;">Admin Control Center</h1>
+              <p class="text-muted" style="font-size:0.875rem;">Full control over events, registrations &amp;
+                scoring</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="badge badge-primary" style="gap:0.4rem;">
+              <i data-lucide="shield" style="width:11px;height:11px;"></i>
+              ADMIN
+            </span>
+          </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(147,51,234,0.15);">
+              <i data-lucide="ticket" style="color: rgb(167,139,250); width:20px; height:20px;"></i>
+            </div>
+            <div class="stat-value" id="stat-total-regs">—</div>
+            <div class="stat-label">Total Registrations</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(219,39,119,0.15);">
+              <i data-lucide="calendar-check" style="color: rgb(249,168,212); width:20px; height:20px;"></i>
+            </div>
+            <div class="stat-value" id="stat-total-events">—</div>
+            <div class="stat-label">Active Events</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(79,70,229,0.15);">
+              <i data-lucide="users" style="color: rgb(165,180,252); width:20px; height:20px;"></i>
+            </div>
+            <div class="stat-value" id="stat-unique-users">—</div>
+            <div class="stat-label">Participants</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(34,197,94,0.12);">
+              <i data-lucide="eye" style="color: rgb(74,222,128); width:20px; height:20px;"></i>
+            </div>
+            <div class="stat-value" id="stat-visible-events">—</div>
+            <div class="stat-label">Visible Events</div>
+          </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="admin-tab-nav">
+          <button class="admin-tab-btn active" id="tab-btn-registrations" onclick="Admin.setTab('registrations', this)">
+            <i data-lucide="list" style="width:15px;height:15px;"></i>
+            Registrations
+          </button>
+          <button class="admin-tab-btn" id="tab-btn-events" onclick="Admin.setTab('events', this)">
+            <i data-lucide="calendar" style="width:15px;height:15px;"></i>
+            Manage Events
+          </button>
+        </div>
+
+        <!-- ══ Registrations Tab ══ -->
+        <div id="registrations-tab" class="tab-content active">
+          <div class="card" style="padding: 0; overflow: hidden;">
+            <div class="flex justify-between items-center"
+              style="padding: 1.5rem 1.75rem; border-bottom: 1px solid rgba(147,51,234,0.1);">
+              <div>
+                <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">All Registrations</h3>
+                <p class="text-muted" style="font-size: 0.8rem;">Live participant data from the database</p>
+              </div>
+              <button class="btn btn-outline btn-sm" onclick="Admin.loadRegistrations()" style="gap:0.4rem;">
+                <i data-lucide="refresh-cw" style="width:13px;height:13px;"></i>
+                Refresh
+              </button>
+            </div>
+            <div class="table-wrapper">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Participant</th>
+                    <th>Event</th>
+                    <th>Team</th>
+                    <th>Code</th>
+                    <th>Score</th>
+                    <th style="text-align:right;">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="registrations-body">
+                  <tr>
+                    <td colspan="6">
+                      <div class="empty-state">
+                        <i data-lucide="loader" class="animate-pulse"></i>
+                        <p>Loading registrations...</p>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ Events Tab ══ -->
+        <div id="events-tab" class="tab-content">
+          <div class="flex justify-between items-center mb-4">
+            <div>
+              <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">Event Library</h3>
+              <p class="text-muted" style="font-size:0.8rem;">Toggle visibility or permanently delete events</p>
+            </div>
+            <button class="btn btn-hero" onclick="Admin.openCreateEventModal()" style="gap:0.5rem;">
+              <i data-lucide="plus" style="width:16px;height:16px;"></i>
+              Create Event
+            </button>
+          </div>
+
+          <div id="admin-events-list" style="display: flex; flex-direction: column; gap: 0.85rem;">
+            <!-- Events rendered here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════ Create Event Modal ════════════ -->
+      <div id="event-modal" class="registration-overlay" onclick="Admin.closeEventModal(event)">
+        <div class="card modal-card" onclick="event.stopPropagation()">
+          <div class="modal-header">
+            <div class="flex items-center gap-3">
+              <div style="width:36px;height:36px;border-radius:10px;
+                        background:linear-gradient(135deg,rgb(147,51,234),rgb(219,39,119));
+                        display:flex;align-items:center;justify-content:center;">
+                <i data-lucide="plus-circle" style="color:white;width:18px;height:18px;"></i>
+              </div>
+              <h3 style="font-size:1.15rem;">Create New Event</h3>
+            </div>
+            <button class="btn btn-ghost btn-sm" onclick="Admin.closeEventModal()" style="padding:0.4rem;">
+              <i data-lucide="x" style="width:18px;height:18px;"></i>
+            </button>
+          </div>
+
+          <form id="event-form" onsubmit="Admin.createEvent(event)">
+            <!-- Title -->
+            <div class="form-field">
+              <label>Event Title *</label>
+              <input type="text" id="ev-title" class="form-control" placeholder="e.g. HackFest 2025" required>
+            </div>
+
+            <!-- Category + Status -->
+            <div class="form-row">
+              <div class="form-field" style="margin-bottom:0;">
+                <label>Category</label>
+                <select id="ev-category" class="form-control">
+                  <option value="Technical">🖥️ Technical</option>
+                  <option value="Cultural">🎭 Cultural</option>
+                  <option value="Gaming">🎮 Gaming</option>
+                  <option value="Concert">🎵 Concert</option>
+                </select>
+              </div>
+              <div class="form-field" style="margin-bottom:0;">
+                <label>Status</label>
+                <select id="ev-status" class="form-control">
+                  <option value="Open">✅ Open</option>
+                  <option value="Filling Fast">⚡ Filling Fast</option>
+                  <option value="Closed">🔒 Closed</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="form-field">
+              <label>Description</label>
+              <textarea id="ev-desc" class="form-control" rows="3"
+                placeholder="Brief description of the event..."></textarea>
+            </div>
+
+            <!-- Date + Time -->
+            <div class="form-row">
+              <div class="form-field" style="margin-bottom:0;">
+                <label>Date *</label>
+                <input type="text" id="ev-date" class="form-control" placeholder="March 25, 2025" required>
+              </div>
+              <div class="form-field" style="margin-bottom:0;">
+                <label>Time *</label>
+                <input type="text" id="ev-time" class="form-control" placeholder="10:00 AM" required>
+              </div>
+            </div>
+
+            <!-- Location + Team Size -->
+            <div class="form-row">
+              <div class="form-field" style="margin-bottom:0;">
+                <label>Location *</label>
+                <input type="text" id="ev-loc" class="form-control" placeholder="Auditorium A" required>
+              </div>
+              <div class="form-field" style="margin-bottom:0;">
+                <label>Team Size</label>
+                <input type="text" id="ev-teamsize" class="form-control" placeholder="Solo / 3–5 members">
+              </div>
+            </div>
+
+            <!-- Prize Pool -->
+            <div class="form-field">
+              <label>Prize Pool</label>
+              <input type="text" id="ev-prize" class="form-control" placeholder="₹50,000">
+            </div>
+
+            <!-- Actions -->
+            <div class="flex gap-3 mt-2">
+              <button type="submit" class="btn btn-hero" style="flex:1;">
+                <i data-lucide="save" style="width:15px;height:15px;"></i>
+                Save Event
+              </button>
+              <button type="button" class="btn btn-outline" onclick="Admin.closeEventModal()">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
   <footer
     style="border-top:1px solid var(--border);margin-top:4rem;position:relative;z-index:1;background:var(--background);">
     <div class="container py-8 footer-inner"
@@ -411,7 +753,7 @@
     </div>
   </footer>
 
-  <script src="js/app.js"></script>
+  <script type="module" src="js/app.js"></script>
   <script src="js/shader-bg.js"></script>
   <script src="js/glow-cards.js"></script>
   <script src="js/pulse-beams.js"></script>
