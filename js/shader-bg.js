@@ -1,39 +1,53 @@
 // ═══════════════════════════════════════════════════════════════════
 // Eventify — Animated Aurora Shader Background (Three.js WebGL)
 // Plays behind all page content as a fixed full-screen canvas.
+// Mobile-optimized: reduced iterations, lower resolution, throttled resize.
 // ═══════════════════════════════════════════════════════════════════
 (function () {
-    if (!window.THREE) {
-        console.warn('[ShaderBG] Three.js not loaded – skipping shader background.');
-        return;
-    }
+  if (!window.THREE) {
+    console.warn('[ShaderBG] Three.js not loaded – skipping shader background.');
+    return;
+  }
 
-    const container = document.createElement('div');
-    container.id = 'shader-bg';
-    Object.assign(container.style, {
-        position: 'fixed',
-        inset: '0',
-        zIndex: '-10',
-        width: '100%',
-        height: '100%',
-        pointerEvents: 'none',
-    });
-    document.body.prepend(container);
+  const isMobile = window.innerWidth < 768;
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    container.appendChild(renderer.domElement);
+  const container = document.createElement('div');
+  container.id = 'shader-bg';
+  Object.assign(container.style, {
+    position: 'fixed',
+    inset: '0',
+    zIndex: '-10',
+    width: '100%',
+    height: '100%',
+    pointerEvents: 'none',
+  });
+  document.body.prepend(container);
 
-    const vertexShader = `void main() { gl_Position = vec4(position, 1.0); }`;
+  const scene = new THREE.Scene();
+  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  const renderer = new THREE.WebGLRenderer({
+    antialias: !isMobile,
+    alpha: true,
+    powerPreference: 'high-performance',
+  });
 
-    const fragmentShader = `
+  // On mobile, render at 50% resolution and upscale — huge performance win
+  const pixelRatio = isMobile ? 0.5 : Math.min(window.devicePixelRatio, 2);
+  renderer.setPixelRatio(pixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  container.appendChild(renderer.domElement);
+
+  // Mobile: fewer octaves (2) and fewer loop iterations (12)
+  const NUM_OCTAVES = isMobile ? 2 : 3;
+  const NUM_LOOPS = isMobile ? '12.0' : '35.0';
+
+  const vertexShader = `void main() { gl_Position = vec4(position, 1.0); }`;
+
+  const fragmentShader = `
     uniform float iTime;
     uniform vec2  iResolution;
 
-    #define NUM_OCTAVES 3
+    #define NUM_OCTAVES ${NUM_OCTAVES}
 
     float rand(vec2 n) {
       return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
@@ -77,11 +91,11 @@
       vec4 o = vec4(0.0);
       float f = 2.0 + fbm(p + vec2(iTime * 5.0, 0.0)) * 0.5;
 
-      for (float i = 0.0; i < 35.0; i++) {
+      for (float i = 0.0; i < ${NUM_LOOPS}; i++) {
         v = p + cos(i * i + (iTime + p.x * 0.08) * 0.025 + i * vec2(13, 11)) * 3.5
             + vec2(sin(iTime * 3.0 + i) * 0.003, cos(iTime * 3.5 - i) * 0.003);
 
-        float tailNoise = fbm(v + vec2(iTime * 0.5, i)) * 0.3 * (1.0 - (i / 35.0));
+        float tailNoise = fbm(v + vec2(iTime * 0.5, i)) * 0.3 * (1.0 - (i / ${NUM_LOOPS}));
 
         vec4 auroraColors = vec4(
           0.1 + 0.3 * sin(i * 0.2 + iTime * 0.4),
@@ -94,7 +108,7 @@
           * exp(sin(i * i + iTime * 0.8))
           / length(max(v, vec2(v.x * f * 0.015, v.y * 1.5)));
 
-        float thinness = smoothstep(0.0, 1.0, i / 35.0) * 0.6;
+        float thinness = smoothstep(0.0, 1.0, i / ${NUM_LOOPS}) * 0.6;
         o += contrib * (1.0 + tailNoise * 0.8) * thinness;
       }
 
@@ -103,29 +117,40 @@
     }
   `;
 
-    const material = new THREE.ShaderMaterial({
-        uniforms: {
-            iTime: { value: 0 },
-            iResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-        },
-        vertexShader,
-        fragmentShader,
-        transparent: true,
-    });
+  const material = new THREE.ShaderMaterial({
+    uniforms: {
+      iTime: { value: 0 },
+      iResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+    },
+    vertexShader,
+    fragmentShader,
+    transparent: true,
+  });
 
-    const geometry = new THREE.PlaneGeometry(2, 2);
-    scene.add(new THREE.Mesh(geometry, material));
+  const geometry = new THREE.PlaneGeometry(2, 2);
+  scene.add(new THREE.Mesh(geometry, material));
 
-    let raf;
-    function tick() {
-        material.uniforms.iTime.value += 0.016;
-        renderer.render(scene, camera);
-        raf = requestAnimationFrame(tick);
-    }
-    tick();
+  // Slower tick on mobile (0.008 vs 0.016)
+  const timeDelta = isMobile ? 0.008 : 0.016;
 
-    window.addEventListener('resize', () => {
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        material.uniforms.iResolution.value.set(window.innerWidth, window.innerHeight);
-    });
+  let raf;
+  function tick() {
+    material.uniforms.iTime.value += timeDelta;
+    renderer.render(scene, camera);
+    raf = requestAnimationFrame(tick);
+  }
+
+  // Delay animation start on mobile to avoid blocking first paint
+  const startDelay = isMobile ? 500 : 0;
+  setTimeout(() => tick(), startDelay);
+
+  // Throttle resize on mobile
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      material.uniforms.iResolution.value.set(window.innerWidth, window.innerHeight);
+    }, isMobile ? 200 : 0);
+  });
 })();
