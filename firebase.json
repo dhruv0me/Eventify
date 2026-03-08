@@ -6,11 +6,7 @@
             "**/.*",
             "**/node_modules/**",
             "**/backend/**",
-            "**/.env",
-            "admin.html",
-            "auth.html",
-            "events.html",
-            "dashboard.html"
+            "**/.env"
         ],
         "rewrites": [
             {
