@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         .auth-card {
             max-width: 400px;
@@ -60,6 +61,14 @@
             border-color: rgb(147, 51, 234);
             color: rgb(167, 139, 250);
         }
+
+        .pulse-beam-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem 0;
+        }
     </style>
 </head>
 
@@ -107,10 +116,11 @@
                     <input type="password" id="password" class="form-control" placeholder="••••••••" required>
                 </div>
 
-                <button type="submit" id="submit-btn" class="btn btn-hero"
-                    style="width: 100%; padding: 0.85rem; margin-top: 1rem;">
-                    Continue
-                </button>
+                <div class="pulse-beam-wrap">
+                    <button type="submit" id="submit-btn" class="btn btn-hero" style="width: 100%; padding: 0.85rem;">
+                        Continue
+                    </button>
+                </div>
             </form>
 
             <div id="error-msg"
@@ -120,6 +130,8 @@
     </div>
 
     <script src="js/app.js"></script>
+    <script src="js/shader-bg.js"></script>
+    <script src="js/pulse-beams.js"></script>
     <script>
         const Auth = {
             mode: 'login',
