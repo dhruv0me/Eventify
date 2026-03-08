@@ -96,13 +96,14 @@
                 <label
                     style="display: block; margin-bottom: 0.5rem; font-size: 0.875rem; color: hsl(var(--muted-foreground));">Team
                     Name (Optional)</label>
-                <input type="text" id="team-name" class="form-control" placeholder="The Avengers"
-                    style="width: 100%; padding: 0.75rem; background: hsla(240, 6%, 10%, 0.8); border: 1px solid hsl(var(--border)); border-radius: var(--radius); color: white;">
+                <input type="text" id="team-name" class="form-control" placeholder="The Avengers">
             </div>
 
             <div class="flex gap-2">
-                <button class="btn btn-hero" style="flex: 1;" onclick="EventsPage.confirmRegistration()">Confirm
-                    Registration</button>
+                <button class="btn btn-hero" style="flex: 1;" onclick="EventsPage.confirmRegistration()">
+                    <i data-lucide="check" style="width:15px;height:15px;"></i>
+                    Confirm Registration
+                </button>
                 <button class="btn btn-outline" onclick="EventsPage.closeModal()">Cancel</button>
             </div>
             <div id="reg-error"

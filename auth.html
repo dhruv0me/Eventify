@@ -30,17 +30,19 @@
 
         .form-control {
             width: 100%;
-            background: hsla(240, 6%, 10%, 0.8);
-            border: 1px solid hsl(var(--border));
-            border-radius: var(--radius);
-            padding: 0.75rem;
-            color: white;
+            background: rgba(12, 12, 22, 0.85);
+            border: 1px solid rgba(147, 51, 234, 0.2);
+            border-radius: calc(var(--radius) * 0.7);
+            padding: 0.75rem 1rem;
+            color: rgb(255, 255, 255);
             outline: none;
             transition: var(--transition-smooth);
         }
 
         .form-control:focus {
-            border-color: hsl(var(--primary));
+            border-color: rgb(147, 51, 234);
+            box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.18);
+            background: rgba(10, 10, 20, 1);
         }
 
         .tab-btn {
@@ -55,8 +57,8 @@
         }
 
         .tab-btn.active {
-            border-color: hsl(var(--primary));
-            color: hsl(var(--primary));
+            border-color: rgb(147, 51, 234);
+            color: rgb(167, 139, 250);
         }
     </style>
 </head>
@@ -106,7 +108,7 @@
                 </div>
 
                 <button type="submit" id="submit-btn" class="btn btn-hero"
-                    style="width: 100%; padding: 0.75rem; margin-top: 1rem;">
+                    style="width: 100%; padding: 0.85rem; margin-top: 1rem;">
                     Continue
                 </button>
             </form>
