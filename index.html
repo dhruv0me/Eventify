@@ -513,9 +513,11 @@
                 <label className="block text-sm text-gray-400 mb-1">Password</label>
                 <input type="password" required value={pass} onChange={e => setPass(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-sm" placeholder="••••••••" />
               </div>
-              <button type="submit" disabled={busy} className="gbtn w-full py-3 rounded-xl font-semibold text-white">
-                {busy ? 'Processing...' : mode === 'login' ? 'Sign In' : 'Sign Up'}
-              </button>
+              <div className="pulse-beam-wrap w-full">
+                <button type="submit" disabled={busy} className="gbtn w-full py-3 rounded-xl font-semibold text-white">
+                  {busy ? 'Processing...' : mode === 'login' ? 'Sign In' : 'Sign Up'}
+                </button>
+              </div>
             </form>
             {err && <p className="text-red-400 text-sm mt-4 text-center">{err}</p>}
           </div>
