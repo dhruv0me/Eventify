@@ -171,7 +171,7 @@
   <!-- Navbar -->
   <nav class="glass-nav">
     <div class="container py-4 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-2" style="text-decoration: none;">
+      <a href="#home" class="flex items-center gap-2" style="text-decoration: none;">
         <div
           style="width: 32px; height: 32px; border-radius: 8px; background: var(--foreground); display:flex; align-items:center; justify-content:center;">
           <i data-lucide="sparkles" style="color: var(--background); width: 18px; height: 18px;"></i>
@@ -179,7 +179,7 @@
         <span class="text-gradient font-bold" style="font-size: 1.25rem;">Eventify</span>
       </a>
       <div class="flex items-center gap-4">
-        <a href="events.html" class="btn btn-ghost">Events</a>
+        <a href="#events" class="btn btn-ghost">Events</a>
         <div id="auth-nav"></div>
         <div class="theme-toggle" title="Toggle theme"></div>
       </div>
@@ -204,13 +204,13 @@
 
         <div class="flex justify-center gap-6" style="flex-wrap:wrap;">
           <div class="pulse-beam-wrap">
-            <a href="auth.html" class="btn" style="padding: 1rem 2.25rem; font-size: 1.05rem;">
+            <a href="#auth" class="btn" style="padding: 1rem 2.25rem; font-size: 1.05rem;">
               Start Managing Events
               <i data-lucide="chevron-right" style="width: 18px; height: 18px;"></i>
             </a>
           </div>
           <div class="pulse-beam-wrap">
-            <a href="events.html" class="btn btn-variant" style="padding: 1rem 2.25rem; font-size: 1.05rem;">
+            <a href="#events" class="btn btn-variant" style="padding: 1rem 2.25rem; font-size: 1.05rem;">
               Browse Events
             </a>
           </div>
@@ -737,13 +737,13 @@
         <p class="text-muted" style="font-size:0.85rem;">One Platform. Every Event. Total Control.</p>
       </div>
       <div class="flex gap-6 text-sm">
-        <a href="events.html" style="color:var(--muted-foreground);text-decoration:none;transition:color 0.2s;"
+        <a href="#events" style="color:var(--muted-foreground);text-decoration:none;transition:color 0.2s;"
           onmouseover="this.style.color='var(--foreground)'"
           onmouseout="this.style.color='var(--muted-foreground)'">Events</a>
-        <a href="auth.html" style="color:var(--muted-foreground);text-decoration:none;transition:color 0.2s;"
+        <a href="#auth" style="color:var(--muted-foreground);text-decoration:none;transition:color 0.2s;"
           onmouseover="this.style.color='var(--foreground)'"
           onmouseout="this.style.color='var(--muted-foreground)'">Sign In</a>
-        <a href="admin.html" style="color:var(--muted-foreground);text-decoration:none;transition:color 0.2s;"
+        <a href="#admin" style="color:var(--muted-foreground);text-decoration:none;transition:color 0.2s;"
           onmouseover="this.style.color='var(--foreground)'"
           onmouseout="this.style.color='var(--muted-foreground)'">Admin</a>
       </div>
@@ -767,6 +767,8 @@
     }
     function toggleSubFAQ(btn) { btn.parentElement.classList.toggle('open'); }
   </script>
+  <!-- Toast Notification -->
+  <div id="toast"></div>
   <!-- Firebase SDK -->
   <script type="module" src="js/firebase-config.js"></script>
 </body>
