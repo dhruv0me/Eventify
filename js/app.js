@@ -2,7 +2,9 @@ import { auth, db, onAuthStateChanged } from './firebase-config.js';
 import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
-    signOut
+    signOut,
+    GoogleAuthProvider,
+    signInWithPopup
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 import {
     collection, getDocs, doc, setDoc, getDoc,
@@ -15,6 +17,39 @@ const App = {
     init() {
         this.initLucide();
         window.addEventListener('hashchange', () => this.handleRoute(window.location.hash));
+
+        // Hamburger menu toggle
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const mobileDropdown = document.getElementById('mobile-nav-dropdown');
+        if (hamburgerBtn && mobileDropdown) {
+            hamburgerBtn.addEventListener('click', () => {
+                const isOpen = mobileDropdown.classList.toggle('open');
+                hamburgerBtn.innerHTML = isOpen
+                    ? '<i data-lucide="x" style="width:22px;height:22px;"></i>'
+                    : '<i data-lucide="menu" style="width:22px;height:22px;"></i>';
+                this.initLucide();
+            });
+            // Close mobile nav on link click
+            mobileDropdown.querySelectorAll('a').forEach(a => {
+                a.addEventListener('click', () => {
+                    mobileDropdown.classList.remove('open');
+                    hamburgerBtn.innerHTML = '<i data-lucide="menu" style="width:22px;height:22px;"></i>';
+                    this.initLucide();
+                });
+            });
+        }
+
+        // Auth form submit
+        const authForm = document.getElementById('auth-form');
+        if (authForm) {
+            authForm.addEventListener('submit', (e) => Auth.handleSubmit(e));
+        }
+
+        // Google Sign-In
+        const googleBtn = document.getElementById('google-signin-btn');
+        if (googleBtn) {
+            googleBtn.addEventListener('click', () => Auth.handleGoogleSignIn());
+        }
 
         // Listen for Firebase Auth state
         onAuthStateChanged(auth, async (userObj) => {
@@ -74,7 +109,7 @@ const App = {
     },
 
     updateNavbar() {
-        // Find ALL auth-nav containers (since we merged multiple navbars, there might be duplicate IDs or we just use the first)
+        // Desktop auth nav
         const authContainers = document.querySelectorAll('#auth-nav');
         authContainers.forEach(container => {
             if (this.user) {
@@ -88,6 +123,22 @@ const App = {
                 `;
             }
         });
+
+        // Mobile auth nav
+        const mobileAuth = document.getElementById('auth-nav-mobile');
+        if (mobileAuth) {
+            if (this.user) {
+                mobileAuth.innerHTML = `
+                    ${this.user.role === 'admin' ? '<a href="#admin" class="mobile-nav-link">Admin Panel</a>' : ''}
+                    <a href="#dashboard" class="mobile-nav-link" style="color:var(--foreground);font-weight:600;">My Dashboard</a>
+                    <button onclick="App.logout()" class="mobile-nav-link" style="width:100%;text-align:left;background:none;border:none;color:var(--muted-foreground);cursor:pointer;font-family:inherit;font-size:0.95rem;">Sign Out</button>
+                `;
+            } else {
+                mobileAuth.innerHTML = `
+                    <a href="#auth" class="mobile-nav-link" style="color:var(--foreground);font-weight:600;">Sign In</a>
+                `;
+            }
+        }
 
         // Fix navbar links to use hash routing
         document.querySelectorAll('a').forEach(a => {
@@ -125,6 +176,24 @@ const Auth = {
         document.getElementById('auth-title').innerText = mode === 'login' ? 'Sign In' : 'Create Account';
         document.getElementById('submit-btn').innerText = mode === 'login' ? 'Sign In' : 'Sign Up';
     },
+
+    getErrorMessage(code) {
+        switch (code) {
+            case 'auth/invalid-email':            return 'Invalid email address.';
+            case 'auth/user-not-found':           return 'No account found with this email.';
+            case 'auth/wrong-password':            return 'Incorrect password. Try again.';
+            case 'auth/too-many-requests':         return 'Too many attempts. Wait a moment and try again.';
+            case 'auth/user-disabled':             return 'This account has been disabled.';
+            case 'auth/network-request-failed':    return 'Network error. Check your connection.';
+            case 'auth/email-already-in-use':      return 'An account with this email already exists.';
+            case 'auth/weak-password':             return 'Password must be at least 6 characters.';
+            case 'auth/invalid-credential':        return 'Invalid email or password.';
+            case 'auth/popup-blocked':             return 'Popup was blocked. Please allow popups.';
+            case 'auth/popup-closed-by-user':      return 'Sign-in popup was closed.';
+            default:                               return 'Something went wrong. Please try again.';
+        }
+    },
+
     async handleSubmit(e) {
         e.preventDefault();
         const email = document.getElementById('email').value;
@@ -132,10 +201,12 @@ const Auth = {
         const name = document.getElementById('name').value;
         const errorEl = document.getElementById('error-msg');
         const btn = document.getElementById('submit-btn');
+        const originalText = btn.innerText;
 
         errorEl.style.display = 'none';
         btn.disabled = true;
-        btn.innerText = 'Processing...';
+        btn.classList.add('btn-loading');
+        btn.innerHTML = '<span class="btn-spinner"></span> Processing...';
 
         try {
             if (this.mode === 'login') {
@@ -149,13 +220,54 @@ const Auth = {
                     created_at: new Date().toISOString()
                 });
             }
+            Admin.toast(this.mode === 'login' ? 'Signed in successfully!' : 'Account created!', 'success');
             window.location.hash = '#dashboard';
         } catch (err) {
-            errorEl.innerText = err.message;
+            errorEl.innerText = this.getErrorMessage(err.code);
             errorEl.style.display = 'block';
         } finally {
             btn.disabled = false;
-            btn.innerText = this.mode === 'login' ? 'Sign In' : 'Sign Up';
+            btn.classList.remove('btn-loading');
+            btn.innerText = originalText;
+        }
+    },
+
+    async handleGoogleSignIn() {
+        const btn = document.getElementById('google-signin-btn');
+        const errorEl = document.getElementById('google-error');
+        errorEl.style.display = 'none';
+        btn.disabled = true;
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '<span class="btn-spinner"></span> Signing in...';
+
+        try {
+            const provider = new GoogleAuthProvider();
+            provider.setCustomParameters({ prompt: 'select_account' });
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+
+            // Save user to Firestore if first time
+            const userRef = doc(db, 'users', user.uid);
+            const existing = await getDoc(userRef);
+            if (!existing.exists()) {
+                await setDoc(userRef, {
+                    email: user.email,
+                    full_name: user.displayName || 'User',
+                    role: 'user',
+                    created_at: new Date().toISOString()
+                });
+            }
+
+            Admin.toast('Signed in with Google!', 'success');
+            window.location.hash = '#dashboard';
+        } catch (err) {
+            if (err.code !== 'auth/popup-closed-by-user') {
+                errorEl.innerText = this.getErrorMessage(err.code);
+                errorEl.style.display = 'block';
+            }
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalHTML;
         }
     }
 };
@@ -218,6 +330,14 @@ const EventsPage = {
     async confirmRegistration() {
         const teamName = document.getElementById('team-name').value;
         const errorEl = document.getElementById('reg-error');
+        const confirmBtn = document.querySelector('#reg-modal .btn:first-of-type');
+        const originalHTML = confirmBtn ? confirmBtn.innerHTML : '';
+
+        if (confirmBtn) {
+            confirmBtn.disabled = true;
+            confirmBtn.classList.add('btn-loading');
+            confirmBtn.innerHTML = '<span class="btn-spinner"></span> Registering...';
+        }
 
         try {
             await addDoc(collection(db, 'registrations'), {
@@ -227,12 +347,18 @@ const EventsPage = {
                 score: 0,
                 registered_at: new Date().toISOString()
             });
-            alert('Successfully registered!');
+            Admin.toast('Registered successfully!', 'success');
             this.closeModal();
             window.location.hash = '#dashboard';
         } catch (err) {
             errorEl.innerText = err.message;
             errorEl.style.display = 'block';
+        } finally {
+            if (confirmBtn) {
+                confirmBtn.disabled = false;
+                confirmBtn.classList.remove('btn-loading');
+                confirmBtn.innerHTML = originalHTML;
+            }
         }
     }
 };
@@ -331,16 +457,30 @@ const Admin = {
         if (tab === 'events') this.loadEvents();
     },
 
+    animateCounter(element, targetValue) {
+        const duration = 1200;
+        const startValue = parseInt(element.textContent) || 0;
+        if (startValue === targetValue) return;
+        const startTime = performance.now();
+        const tick = (now) => {
+            const progress = Math.min((now - startTime) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            element.textContent = Math.round(startValue + (targetValue - startValue) * eased);
+            if (progress < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+    },
+
     updateStats() {
         const uniqueUsers = new Set(this.registrations.map(r => r.user_id)).size;
-        document.getElementById('stat-total-regs').textContent = this.registrations.length;
-        document.getElementById('stat-unique-users').textContent = uniqueUsers;
+        this.animateCounter(document.getElementById('stat-total-regs'), this.registrations.length);
+        this.animateCounter(document.getElementById('stat-unique-users'), uniqueUsers);
     },
 
     updateEventStats(events) {
         const visible = events.filter(e => e.is_visible !== false).length;
-        document.getElementById('stat-total-events').textContent = events.length;
-        document.getElementById('stat-visible-events').textContent = visible;
+        this.animateCounter(document.getElementById('stat-total-events'), events.length);
+        this.animateCounter(document.getElementById('stat-visible-events'), visible);
     },
 
     async loadEvents() {
